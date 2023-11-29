@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
@@ -45,6 +46,9 @@ public class TablaGeneralController {
 
     @FXML
     private TextField tfBusqueda;
+    
+    @FXML
+    private TableView<?> tvTabla;
 
     @FXML
     void abrirTabla(ActionEvent event) {
