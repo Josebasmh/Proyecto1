@@ -24,6 +24,9 @@ public class TablaGeneralController {
     private Menu mTablas;
 
     @FXML
+    private TableColumn<?, ?> tcAbreviatura;
+
+    @FXML
     private TableColumn<?, ?> tcDeporte;
 
     @FXML
