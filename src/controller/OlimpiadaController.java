@@ -9,7 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-public class EventoController {
+public class OlimpiadaController {
 
     @FXML
     private ChoiceBox<?> cbBusqueda;
@@ -21,29 +21,22 @@ public class EventoController {
     private Menu mAñadir;
 
     @FXML
-    private TableColumn<?, ?> tcDeporte;
+    private TableColumn<?, ?> tcAnio;
+
+    @FXML
+    private TableColumn<?, ?> tcCiudad;
 
     @FXML
     private TableColumn<?, ?> tcNombre;
 
     @FXML
-    private TableColumn<?, ?> tcOlimpiada;
+    private TableColumn<?, ?> tcTemporada;
 
     @FXML
     private TextField tfBusqueda;
 
     @FXML
     private TableView<?> tvTabla;
-
-    @FXML
-    void aniadirDeporte(ActionEvent event) {
-
-    }
-
-    @FXML
-    void aniadirEvento(ActionEvent event) {
-
-    }
 
     @FXML
     void aniadirOlimpiada(ActionEvent event) {

@@ -11,15 +11,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 
-<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EventoController">
+<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OlimpiadaController">
    <children>
       <MenuBar prefWidth="800.0">
          <menus>
             <Menu fx:id="mAñadir" mnemonicParsing="false" text="Añadir">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#aniadirEvento" text="Evento" />
                   <MenuItem mnemonicParsing="false" onAction="#aniadirOlimpiada" text="Olimpiada" />
-                  <MenuItem mnemonicParsing="false" onAction="#aniadirDeporte" text="Deporte" />
                </items>
             </Menu>
             <Menu fx:id="mAyuda" mnemonicParsing="false" text="Ayuda">
@@ -48,8 +46,9 @@
       <TableView fx:id="tvTabla" prefHeight="400.0" prefWidth="600.0">
          <columns>
             <TableColumn fx:id="tcNombre" prefWidth="75.0" text="Nombre" />
-            <TableColumn fx:id="tcOlimpiada" prefWidth="75.0" text="Olimpiada" />
-            <TableColumn fx:id="tcDeporte" prefWidth="75.0" text="Deporte" />
+            <TableColumn fx:id="tcAnio" prefWidth="75.0" text="Año" />
+            <TableColumn fx:id="tcTemporada" prefWidth="75.0" text="Temporada" />
+            <TableColumn fx:id="tcCiudad" prefWidth="75.0" text="Ciudad" />
          </columns>
          <FlowPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" />

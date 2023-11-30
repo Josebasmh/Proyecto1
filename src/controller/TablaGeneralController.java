@@ -46,12 +46,17 @@ public class TablaGeneralController {
 
     @FXML
     private TextField tfBusqueda;
-    
+
     @FXML
     private TableView<?> tvTabla;
 
     @FXML
     void abrirTabla(ActionEvent event) {
+
+    }
+
+    @FXML
+    void aniadirDeporte(ActionEvent event) {
 
     }
 
