@@ -36,7 +36,7 @@ public class Participacion {
 	}
 
 	// METODOS GETTER Y SETTER
-	
+	  
 	public int getIdDeportista() {
 		return idDeportista;
 	}
