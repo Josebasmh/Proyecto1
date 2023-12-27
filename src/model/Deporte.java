@@ -5,6 +5,11 @@ public class Deporte {
 	private int idDeporte;
 	private String nombre;
 	
+	/**
+	 * Clase para crear un deporte.
+	 * @param idDep ID del deporte
+	 * @param nom Nombre
+	 */
 	public Deporte(int idDep, String nom) {
 		idDeporte = idDep;
 		nombre = nom;
