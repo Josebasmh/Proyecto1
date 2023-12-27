@@ -63,6 +63,7 @@
             <TableColumn fx:id="tcOlimpiada" prefWidth="75.0" text="Olimpiada" />
             <TableColumn fx:id="tcDeporte" prefWidth="75.0" text="Deporte" />
             <TableColumn fx:id="tcEquipo" prefWidth="75.0" text="Equipo" />
+            <TableColumn fx:id="tcAbreviatura" prefWidth="75.0" text="Abreviatura" />
             <TableColumn fx:id="tcEdad" prefWidth="75.0" text="Edad" />
             <TableColumn fx:id="tcMedalla" prefWidth="75.0" text="Medalla" />
         </columns>
