@@ -2,9 +2,15 @@ package model;
 
 public class Equipo {
 
-	int idEquipo;
-	String nombre,iniciales;
+	private int idEquipo;
+	private String nombre,iniciales;
 	
+	/**
+	 * Clase para crear un Equipo.
+	 * @param idEq ID del Equipo
+	 * @param nom Nombre
+	 * @param ini Iniciales
+	 */
 	public Equipo(int idEq,String nom, String ini) {
 		idEquipo = idEq;
 		nombre = nom;
