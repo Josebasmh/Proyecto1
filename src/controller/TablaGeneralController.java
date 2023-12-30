@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import dao.OlimpiadasDao;
@@ -20,7 +21,7 @@ import model.Participacion;
 public class TablaGeneralController implements Initializable{
 
     @FXML
-    private ChoiceBox<?> cbBusqueda;
+    private ChoiceBox<String> cbBusqueda;
 
     @FXML
     private Menu mAyuda;
@@ -61,7 +62,9 @@ public class TablaGeneralController implements Initializable{
     @FXML
     private TableView<Participacion> tvTabla;
     
+    // VARIABLES DE CLASE INSERTADAS MANUALMENTE 
     private OlimpiadasDao oDao = new OlimpiadasDao();
+    private String[]campos = {"Deportista","Evento","Olimpiada","Deporte","Equipo","Abreviatura","Edad","Medalla"};
 
     @FXML
     void abrirTabla(ActionEvent event) {
@@ -98,20 +101,44 @@ public class TablaGeneralController implements Initializable{
 
     }
 
+    /**
+     * Filtra los registros de la tabla dependiendo del ChoiceBox y el TextField
+     * @param event
+     */
     @FXML
     void filtrar(KeyEvent event) {
 
+    	String campoSeleccionado = cbBusqueda.getSelectionModel().getSelectedItem();
+    	String txFiltro = tfBusqueda.getText().toString();
+    	System.out.println(txFiltro);
+    	ObservableList<Participacion>listaFiltrada = oDao.filtrarParticipaciones(campoSeleccionado, txFiltro);
+    	cargarTabla(listaFiltrada);
     }
 
     @FXML
     void ventanaAyuda(ActionEvent event) {
 
+    	
     }
 
+    /**
+     * Cuando se inicia la ventana, añade todos los registros de la tabla Participacion de la bbdd en la tabla de la ventana y 
+     * rellena el choicebox para seleccionar el campo que queremos filtrar.
+     */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+		cbBusqueda.getItems().addAll(campos);
 		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+		cargarTabla(participaciones);
+		cargarTabla(participaciones);
+	}
+	
+	/**
+	 * Método para cargar los datos de la bbdd en la tabla.
+	 */
+	private void cargarTabla(ObservableList<Participacion>participaciones) {
+
 		tcAbreviatura.setCellValueFactory(new PropertyValueFactory<Participacion, String>("abreviaturaEquipo"));
 		tcDeporte.setCellValueFactory(new PropertyValueFactory<Participacion, String>("nomDeporte"));
 		tcDeportista.setCellValueFactory(new PropertyValueFactory<Participacion, String>("nomDeportista"));
@@ -123,5 +150,4 @@ public class TablaGeneralController implements Initializable{
 		
 		tvTabla.setItems(participaciones);
 	}
-
 }
