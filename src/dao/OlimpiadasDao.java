@@ -49,13 +49,16 @@ public class OlimpiadasDao {
 			// DEPENDIENDO DEL CAMPO SELECCIONADO TIENE UNA SINTAXIS
 			switch (campo){
 			case "Edad","Medalla":
-				consultaModificada += " AND " + campo + " LIKE '%" + valor + "%';";
+				consultaModificada += " AND Participacion." + campo + " LIKE '%" + valor + "%';";
+				break;
 			
 			case "Abreviatura":
-				consultaModificada += " AND Equipo." + campo + " LIKE '%" + valor + "%';";
+				consultaModificada += " AND Equipo.iniciales LIKE '%" + valor + "%';";
+				break;
 				
 			case "Deportista","Evento","Olimpiada","Deporte","Equipo":
 				consultaModificada += " AND " + campo + ".nombre LIKE '%" + valor + "%';";
+				break;
 			}
 			listaParticipacion=crearListaParticipaciones(consultaModificada);			
 		}else {

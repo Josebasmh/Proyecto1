@@ -109,8 +109,7 @@ public class TablaGeneralController implements Initializable{
     void filtrar(KeyEvent event) {
 
     	String campoSeleccionado = cbBusqueda.getSelectionModel().getSelectedItem();
-    	String txFiltro = tfBusqueda.getText().toString();
-    	System.out.println(txFiltro);
+    	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Participacion>listaFiltrada = oDao.filtrarParticipaciones(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
     }
