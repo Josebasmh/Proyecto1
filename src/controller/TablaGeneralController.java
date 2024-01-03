@@ -1,21 +1,27 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import dao.OlimpiadasDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Participacion;
 
 public class TablaGeneralController implements Initializable{
@@ -62,15 +68,37 @@ public class TablaGeneralController implements Initializable{
     @FXML
     private TableView<Participacion> tvTabla;
     
-    // VARIABLES DE CLASE INSERTADAS MANUALMENTE 
+    // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Deportista","Evento","Olimpiada","Deporte","Equipo","Abreviatura","Edad","Medalla"};
 
+    /**
+     * Método para iniciar la tabla Deportista
+     * @param event
+     */
     @FXML
-    void abrirTabla(ActionEvent event) {
-
+    void abrirDeportista(ActionEvent event) {
+    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS");
     }
 
+    /**
+     *Método para iniciar la tabla Evento
+     * @param event
+     */
+    @FXML
+    void abrirEvento(ActionEvent event) {
+    	ventanaSecundaria("VentanaEvento", "EVENTOS");
+    }
+
+    /**
+     * Método para iniciar la tabla Olimpiada
+     * @param event
+     */
+    @FXML
+    void abrirOlimpiada(ActionEvent event) {
+    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS");
+    }
+    
     @FXML
     void aniadirDeporte(ActionEvent event) {
 
@@ -131,6 +159,7 @@ public class TablaGeneralController implements Initializable{
 		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
 		cargarTabla(participaciones);
 		cargarTabla(participaciones);
+		
 	}
 	
 	/**
@@ -149,4 +178,28 @@ public class TablaGeneralController implements Initializable{
 		
 		tvTabla.setItems(participaciones);
 	}
+	
+	/**
+	 * Método para crear una ventana y ver una tabla secundaria.
+	 * @param c Controlador
+	 * @param t Título de ventana
+	 */
+	private void ventanaSecundaria(String c, String t) {
+		Stage stage = new Stage();
+		try {
+			FlowPane root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/"+c+".fxml"));
+			stage.setTitle(t);
+			Scene scene = new Scene(root,800,600);
+			stage.setScene(scene);
+			stage.setMinWidth(800);
+			stage.setMinHeight(600);
+			stage.setMaxWidth(800);
+			stage.setMaxHeight(600);
+			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.show();	
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	} 
 }
