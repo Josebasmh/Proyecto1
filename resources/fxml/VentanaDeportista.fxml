@@ -11,8 +11,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 
-
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DeportistaController">
+<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DeportistaController">
    <children>
       <MenuBar prefWidth="800.0">
          <menus>
@@ -32,8 +31,11 @@
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
+         <FlowPane.margin>
+            <Insets top="20.0" />
+         </FlowPane.margin>
       </FlowPane>
-      <TableView fx:id="tvTabla" prefHeight="400.0" prefWidth="600.0">
+      <TableView fx:id="tvTabla" prefHeight="425.0" prefWidth="600.0">
          <columns>
             <TableColumn fx:id="tcNombre" prefWidth="75.0" text="Nombre" />
             <TableColumn fx:id="tcSexo" prefWidth="75.0" text="Sexo" />
@@ -44,6 +46,9 @@
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <FlowPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </FlowPane.margin>
       </TableView>
    </children>
 </FlowPane>

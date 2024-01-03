@@ -13,7 +13,7 @@ public class OlimpiadasDao {
 
 	private ConexionBD conexion;
 	
-	// ESTA CONSULTA ESTÁ SIN ; AL FINAL PARA UTILIZARLA EN DISTINTOS PROCESOS AÑADIENDOLES MÁS FILTROS 
+	// ESTA CONSULTA ESTÁ SIN ; AL FINAL PARA UTILIZARLA EN DISTINTOS PROCESOS AÑADIENDOLES MÁS FILTROS \\
 	private String consulta = "SELECT Deportista.id_deportista,Evento.id_evento,Equipo.id_equipo,Deportista.nombre,Evento.nombre,Olimpiada.nombre,Deporte.nombre,Equipo.nombre,iniciales,edad,medalla "
 			+ "FROM Participacion,Deportista,Evento,Olimpiada,Deporte,Equipo "
 			+ "WHERE Deportista.id_deportista = Participacion.id_deportista "

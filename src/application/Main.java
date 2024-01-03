@@ -20,12 +20,12 @@ public class Main extends Application{
 		try {
 			root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/VentanaGeneral.fxml"));
 			stage.setTitle("GESTION DE OLIMPIADAS");
-			Scene scene = new Scene(root,800,600);
+			Scene scene = new Scene(root,1000,600);
 			stage.setScene(scene);
-			stage.setMinWidth(800);
-			stage.setMinHeight(600);
-			stage.setMaxWidth(800);
-			stage.setMaxHeight(600);
+			stage.setMinWidth(1000);
+			stage.setMinHeight(700);
+			stage.setMaxWidth(1000);
+			stage.setMaxHeight(700);
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.show();	
 		}catch(IOException e) {
