@@ -18,7 +18,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 		try {
-			root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/Ventanageneral.fxml"));
+			root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/VentanaGeneral.fxml"));
 			stage.setTitle("GESTION DE OLIMPIADAS");
 			Scene scene = new Scene(root,800,600);
 			stage.setScene(scene);
@@ -29,7 +29,7 @@ public class Main extends Application{
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.show();	
 		}catch(IOException e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	public static void main(String[] args) {
