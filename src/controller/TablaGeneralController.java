@@ -158,8 +158,6 @@ public class TablaGeneralController implements Initializable{
 		cbBusqueda.getItems().addAll(campos);
 		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
 		cargarTabla(participaciones);
-		cargarTabla(participaciones);
-		
 	}
 	
 	/**
