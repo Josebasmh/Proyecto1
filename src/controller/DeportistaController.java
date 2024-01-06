@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import model.Deportista;
+import model.Participacion;
 
 public class DeportistaController implements Initializable{
 
@@ -38,7 +39,7 @@ public class DeportistaController implements Initializable{
     private TableColumn<Deportista, Integer> tcPeso;
 
     @FXML
-    private TableColumn<Deportista, String> tcSexo;
+    private TableColumn<Deportista, Character> tcSexo;
 
     @FXML
     private TextField tfBusqueda;
@@ -57,7 +58,10 @@ public class DeportistaController implements Initializable{
 
     @FXML
     void filtrar(KeyEvent event) {
-
+    	String campoSeleccionado = cbBusqueda.getSelectionModel().getSelectedItem();
+    	String txFiltro = tfBusqueda.getText().toString();    	
+    	ObservableList<Deportista>listaFiltrada = oDao.filtrarDeportista(campoSeleccionado, txFiltro);
+    	cargarTabla(listaFiltrada);
     }
 
 	@Override
@@ -73,7 +77,7 @@ public class DeportistaController implements Initializable{
 		//tcFoto.setCellValueFactory(new PropertyValueFactory<Deportista, T>("foto"));
 		tcNombre.setCellValueFactory(new PropertyValueFactory<Deportista, String>("nombre"));
 		tcPeso.setCellValueFactory(new PropertyValueFactory<Deportista, Integer>("peso"));
-		//tcSexo.setCellValueFactory(new PropertyValueFactory<Deportista, String>("sexo"));
+		tcSexo.setCellValueFactory(new PropertyValueFactory<Deportista, Character>("sexo"));
 		
 		tvTabla.setItems(listaDeportista);
 	}

@@ -129,7 +129,7 @@ public class OlimpiadasDao {
 			while (rs.next()) {
 				int nId = rs.getInt("id_deportista");
 				String sNombre = rs.getString("nombre");
-				Character cSexo = rs.getCharacterStream("sexo").toString().toCharArray()[0];
+				Character cSexo = rs.getString("sexo").toCharArray()[0];
 				Integer nPeso = rs.getInt("peso");
 				Integer nAltura = rs.getInt("altura");
 				Deportista d = new Deportista(nId, sNombre, cSexo, nPeso, nAltura);
@@ -137,6 +137,13 @@ public class OlimpiadasDao {
 			}
 			conexion.CloseConexion();
 		}catch(SQLException e) {e.printStackTrace();}		
+		return listaDeportista;
+	}
+
+	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
+		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
+		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaDeportista = crearListaDeportista(consultaModificada);
 		return listaDeportista;
 	}
 }
