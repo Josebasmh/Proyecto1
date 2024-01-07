@@ -78,7 +78,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirDeportista(ActionEvent event) {
-    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS");
+    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS",800,600);
     }
 
     /**
@@ -87,7 +87,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirEvento(ActionEvent event) {
-    	ventanaSecundaria("VentanaEvento", "EVENTOS");
+    	ventanaSecundaria("VentanaEvento", "EVENTOS",800,600);
     }
 
     /**
@@ -96,7 +96,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirOlimpiada(ActionEvent event) {
-    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS");
+    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS",800,600);
     }
     
     @FXML
@@ -106,7 +106,7 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     void aniadirDeportista(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA",450,500);
     }
 
     @FXML
@@ -179,20 +179,22 @@ public class TablaGeneralController implements Initializable{
 	
 	/**
 	 * Método para crear una ventana y ver una tabla secundaria.
-	 * @param c Controlador
+	 * @param f fxml
 	 * @param t Título de ventana
+	 * @param altura
+	 * @param anchura
 	 */
-	private void ventanaSecundaria(String c, String t) {
+	private void ventanaSecundaria(String f, String t,Integer altura,Integer anchura) {
 		Stage stage = new Stage();
 		try {
-			FlowPane root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/"+c+".fxml"));
+			FlowPane root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/"+f+".fxml"));
 			stage.setTitle(t);
-			Scene scene = new Scene(root,800,600);
+			Scene scene = new Scene(root,altura,anchura);
 			stage.setScene(scene);
-			stage.setMinWidth(800);
-			stage.setMinHeight(600);
-			stage.setMaxWidth(800);
-			stage.setMaxHeight(600);
+			stage.setMinWidth(altura);
+			stage.setMinHeight(anchura);
+			stage.setMaxWidth(altura);
+			stage.setMaxHeight(anchura);
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.show();	

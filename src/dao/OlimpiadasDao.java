@@ -136,14 +136,52 @@ public class OlimpiadasDao {
 				listaDeportista.add(d);
 			}
 			conexion.CloseConexion();
-		}catch(SQLException e) {e.printStackTrace();}		
+		}catch(SQLException e) {}		
 		return listaDeportista;
 	}
 
+	/**
+	 * Método que añade una condición de busqueda SQL(WHERE) a la consulta genérica de Deportista y llama a CrearListaDeportista()
+	 * para ejecutarla.
+	 * @param campoSeleccionado columna que se ejecutara el filtro.
+	 * @param txFiltro el valor que se quiere buscar.
+	 * @return
+	 */
 	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
 		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
 		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
 		listaDeportista = crearListaDeportista(consultaModificada);
 		return listaDeportista;
+	}
+
+	public Integer generarId(String tabla) {
+		Integer nId = 0;
+		String consulta = "SELECT COUNT(*) FROM " + tabla + ";";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				nId = rs.getInt(0);
+			}
+			conexion.CloseConexion();
+		} catch (SQLException e) {}
+		
+		return nId;
+	}
+
+	public boolean aniadirDeportista(Deportista d) {
+		String consulta = "INSERT INTO deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);
+			System.out.println(i);
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
