@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
@@ -202,4 +203,22 @@ public class TablaGeneralController implements Initializable{
 			e.printStackTrace();
 		}
 	} 
+	
+	/**
+	 * Crea una alerta en pantalla que puede ser de tipo error (E) o de tipo información(I)
+	 * @param tipoAlerta 'E','I'
+	 * @param mensaje mensaje que se insertará en la alerta
+	 */
+	static void ventanaAlerta(String tipoAlerta, String mensaje) {
+		Alert alert = null;
+		switch (tipoAlerta) {
+			case ("E"):
+				alert = new Alert(Alert.AlertType.ERROR);
+				break;
+			case ("I"):
+				alert = new Alert(Alert.AlertType.INFORMATION);
+		}
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+	}
 }

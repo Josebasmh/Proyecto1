@@ -55,7 +55,11 @@ public class AniadirDeportistaController implements Initializable{
     	Integer nAltura = Integer.parseInt(tfAltura.getText());
     	Deportista d = new Deportista(nId, sNombre, cSexo, nPeso, nAltura);
     	boolean resultado = oDao.aniadirDeportista(d);
-    	System.out.println(resultado);
+    	if (resultado) {
+    		TablaGeneralController.ventanaAlerta("I", "Deportista añadido con éxito");
+    	}else {
+    		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deportista");
+    	}
     	Cancelar(event);
     }
 

@@ -179,8 +179,7 @@ public class OlimpiadasDao {
 			System.out.println(i);
 			conexion.CloseConexion();
 			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e) {			
 			return false;
 		}
 	}
