@@ -3,8 +3,8 @@ package model;
 public class Olimpiada {
 
 	private int idOlimpiada;
-	private String nombre, ciudad;
-	private Integer anio, temporada;
+	private String nombre, ciudad, temporada;
+	private Integer anio;
 	
 	/**
 	 * Clase para crear una olimpiada.
@@ -14,7 +14,7 @@ public class Olimpiada {
 	 * @param temp temporada
 	 * @param ciu ciudad
 	 */
-	public Olimpiada(int idOli, String nom, Integer ani, Integer temp, String ciu) {
+	public Olimpiada(int idOli, String nom, Integer ani, String temp, String ciu) {
 			idOlimpiada = idOli;
 			nombre = nom;
 			anio = ani;
@@ -56,11 +56,11 @@ public class Olimpiada {
 		this.anio = anio;
 	}
 
-	public Integer getTemporada() {
+	public String getTemporada() {
 		return temporada;
 	}
 
-	public void setTemporada(Integer temporada) {
+	public void setTemporada(String temporada) {
 		this.temporada = temporada;
 	}
 }

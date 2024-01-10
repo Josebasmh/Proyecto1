@@ -11,18 +11,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 
-<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OlimpiadaController">
+<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OlimpiadaController">
    <children>
       <MenuBar prefWidth="800.0">
          <menus>
             <Menu fx:id="mAñadir" mnemonicParsing="false" text="Añadir">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#aniadirOlimpiada" text="Olimpiada" />
-               </items>
-            </Menu>
-            <Menu fx:id="mAyuda" mnemonicParsing="false" text="Ayuda">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#ventanaAyuda" text="¿Qué es esto?" />
                </items>
             </Menu>
          </menus>

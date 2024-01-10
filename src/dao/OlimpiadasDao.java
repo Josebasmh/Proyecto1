@@ -8,6 +8,7 @@ import conexion.ConexionBD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Deportista;
+import model.Olimpiada;
 import model.Participacion;
 
 public class OlimpiadasDao {
@@ -25,6 +26,9 @@ public class OlimpiadasDao {
 	
 	private String consultaDeportista = "SELECT id_deportista,nombre,sexo,peso,altura "
 			+ "FROM Deportista";
+	
+	private String consultaOlimpiada = "SELECT id_olimpiada,nombre,anio,temporada,ciudad "
+			+ "FROM Olimpiada";
 	
 	/**
 	 * Carga todos los registros de la tabla Participacion.
@@ -184,4 +188,40 @@ public class OlimpiadasDao {
 			return false;
 		}
 	}
+
+	public ObservableList<Olimpiada> filtrarOlimpiada(String campoSeleccionado, String txFiltro) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ObservableList<Olimpiada> cargarOlimpiada() {
+		
+		ObservableList<Olimpiada> listaOlimpiada = FXCollections.observableArrayList();
+		String consultaModificada = consultaOlimpiada + ";";
+		listaOlimpiada = crearListaOlimpiada(consultaModificada);
+		return listaOlimpiada;
+		
+	}
+
+	private ObservableList<Olimpiada> crearListaOlimpiada(String consulta) {
+		ObservableList<Olimpiada> listaOlimpiadas= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nId = rs.getInt("id_olimpiada");
+				String sNombre = rs.getString("nombre");
+				Integer nAnio= rs.getInt("anio");
+				String sTemporada = rs.getString("temporada");
+				String sCiudad = rs.getString("ciudad");
+				Olimpiada o = new Olimpiada(nId, sNombre, nAnio, sTemporada, sCiudad);
+				
+				listaOlimpiadas.add(o);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {e.printStackTrace();}		
+		return listaOlimpiadas;
+	}
+	
 }
