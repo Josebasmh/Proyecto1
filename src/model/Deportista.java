@@ -10,12 +10,12 @@ public class Deportista {
 	/**
 	 * Clase para crear un deportista.
 	 * @param idDep ID del deportista
-	 * @param nom Nombre
-	 * @param sex Sexo
-	 * @param pes Peso
-	 * @param alt Altura
+	 * @param nom nombre
+	 * @param sex sexo
+	 * @param pes peso
+	 * @param alt altura
 	 */
-	public Deportista(int idDep, String nom, char sex, Integer pes, Integer alt) {
+	public Deportista(int idDep, String nom, Character sex, Integer pes, Integer alt) {
 		idDeportista = idDep;
 		nombre = nom;
 		sexo = sex;

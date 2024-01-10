@@ -7,20 +7,24 @@ import java.sql.SQLException;
 import conexion.ConexionBD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Deportista;
 import model.Participacion;
 
 public class OlimpiadasDao {
 
 	private ConexionBD conexion;
 	
-	// ESTA CONSULTA ESTÁ SIN ; AL FINAL PARA UTILIZARLA EN DISTINTOS PROCESOS AÑADIENDOLES MÁS FILTROS \\
-	private String consulta = "SELECT Deportista.id_deportista,Evento.id_evento,Equipo.id_equipo,Deportista.nombre,Evento.nombre,Olimpiada.nombre,Deporte.nombre,Equipo.nombre,iniciales,edad,medalla "
+	// ESTAS CONSULTAS ESTÁ SIN ; AL FINAL PARA UTILIZARLA EN DISTINTOS PROCESOS AÑADIENDOLES MÁS FILTROS \\
+	private String consultaPrincipal = "SELECT Deportista.id_deportista,Evento.id_evento,Equipo.id_equipo,Deportista.nombre,Evento.nombre,Olimpiada.nombre,Deporte.nombre,Equipo.nombre,iniciales,edad,medalla "
 			+ "FROM Participacion,Deportista,Evento,Olimpiada,Deporte,Equipo "
 			+ "WHERE Deportista.id_deportista = Participacion.id_deportista "
 			+ "AND Equipo.id_equipo = Participacion.id_equipo "
 			+ "AND Evento.id_evento = Participacion.id_evento "
 			+ "AND Olimpiada.id_olimpiada = Evento.id_olimpiada "
 			+ "AND Deporte.id_deporte = Evento.id_deporte";
+	
+	private String consultaDeportista = "SELECT id_deportista,nombre,sexo,peso,altura "
+			+ "FROM Deportista";
 	
 	/**
 	 * Carga todos los registros de la tabla Participacion.
@@ -29,7 +33,7 @@ public class OlimpiadasDao {
 	public ObservableList<Participacion> cargarParticipacion() {
 		
 		ObservableList<Participacion>listaParticipacion = FXCollections.observableArrayList();	
-		String consultaModificada =consulta + ";";
+		String consultaModificada =consultaPrincipal + ";";
 		listaParticipacion=crearListaParticipaciones(consultaModificada);	
 		return listaParticipacion;
 }
@@ -44,7 +48,7 @@ public class OlimpiadasDao {
 		
 		ObservableList<Participacion>listaParticipacion= FXCollections.observableArrayList();
 		if (!valor.equals("")) {
-			String consultaModificada=consulta;
+			String consultaModificada=consultaPrincipal;
 
 			// DEPENDIENDO DEL CAMPO SELECCIONADO TIENE UNA SINTAXIS
 			switch (campo){
@@ -67,6 +71,11 @@ public class OlimpiadasDao {
 		return listaParticipacion;
 	}
 	
+	/**
+	 * Crea una lista de participaciones con la consulta pasada como parametro.
+	 * @param consulta
+	 * @return {@link ObservableList} Participacion
+	 */
 	private ObservableList<Participacion> crearListaParticipaciones (String consulta) {
 		ObservableList<Participacion>listaParticipacion= FXCollections.observableArrayList();
 		try {
@@ -93,5 +102,86 @@ public class OlimpiadasDao {
 			
 		}		
 		return listaParticipacion;
+	}
+	
+	/**
+	 * Carga todos los registros de la tabla Deportista.
+	 * @return {@link ObservableList} Deportista
+	 */
+	public ObservableList<Deportista> cargarDeportista(){
+		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
+		String consultaModificada =consultaDeportista + ";";
+		listaDeportista = crearListaDeportista(consultaModificada);
+		return listaDeportista;
+	}
+
+	/**
+	 * Crea una lista de deportistas con la consulta pasada como parametro.
+	 * @param consulta
+	 * @return {@link ObservableList} Deportista
+	 */
+	private ObservableList<Deportista> crearListaDeportista(String consulta) {
+		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nId = rs.getInt("id_deportista");
+				String sNombre = rs.getString("nombre");
+				Character cSexo = rs.getString("sexo").toCharArray()[0];
+				Integer nPeso = rs.getInt("peso");
+				Integer nAltura = rs.getInt("altura");
+				Deportista d = new Deportista(nId, sNombre, cSexo, nPeso, nAltura);
+				listaDeportista.add(d);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {}		
+		return listaDeportista;
+	}
+
+	/**
+	 * Método que añade una condición de busqueda SQL(WHERE) a la consulta genérica de Deportista y llama a CrearListaDeportista()
+	 * para ejecutarla.
+	 * @param campoSeleccionado columna que se ejecutara el filtro.
+	 * @param txFiltro el valor que se quiere buscar.
+	 * @return
+	 */
+	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
+		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
+		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaDeportista = crearListaDeportista(consultaModificada);
+		return listaDeportista;
+	}
+
+	public Integer generarId(String tabla) {
+		Integer nId = 0;
+		String consulta = "SELECT COUNT(*) FROM " + tabla + ";";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				nId = rs.getInt(0);
+			}
+			conexion.CloseConexion();
+		} catch (SQLException e) {}
+		
+		return nId;
+	}
+
+	public boolean aniadirDeportista(Deportista d) {
+		String consulta = "INSERT INTO Deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);
+			System.out.println(i);
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {	
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
