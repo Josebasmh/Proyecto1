@@ -171,7 +171,7 @@ public class OlimpiadasDao {
 	}
 
 	public boolean aniadirDeportista(Deportista d) {
-		String consulta = "INSERT INTO deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
+		String consulta = "INSERT INTO Deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
 		try {
 			conexion = new ConexionBD();
 			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
@@ -179,7 +179,8 @@ public class OlimpiadasDao {
 			System.out.println(i);
 			conexion.CloseConexion();
 			return true;
-		} catch (SQLException e) {			
+		} catch (SQLException e) {	
+			e.printStackTrace();
 			return false;
 		}
 	}
