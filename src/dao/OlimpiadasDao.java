@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import conexion.ConexionBD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Deporte;
 import model.Deportista;
 import model.Evento;
+import model.Olimpiada;
 import model.Participacion;
 
 public class OlimpiadasDao {
@@ -31,6 +33,13 @@ public class OlimpiadasDao {
 			+ "FROM Evento e "
 			+ "LEFT JOIN Olimpiada o on o.id_olimpiada = e.id_olimpiada "
 			+ "LEFT JOIN Deporte d on d.id_deporte = e.id_deporte";
+	
+	private String consultaOlimpiada = "SELECT id_olimpiada,nombre,anio,temporada,ciudad "
+			+ "FROM Olimpiada";
+	
+	private String consultaDeporte = "SELECT id_deporte,nombre "
+			+ "FROM Deporte";
+	
 	/**
 	 * Carga todos los registros de la tabla Participacion.
 	 * @return ObservableList con Participacion
@@ -121,6 +130,20 @@ public class OlimpiadasDao {
 	}
 
 	/**
+	 * Método que añade una condición de busqueda SQL(WHERE) a la consulta genérica de Deportista y llama a CrearListaDeportista()
+	 * para ejecutarla.
+	 * @param campoSeleccionado columna que se ejecutara el filtro.
+	 * @param txFiltro el valor que se quiere buscar.
+	 * @return lista de deportistas.
+	 */
+	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
+		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
+		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaDeportista = crearListaDeportista(consultaModificada);
+		return listaDeportista;
+	}
+
+	/**
 	 * Crea una lista de deportistas con la consulta pasada como parametro.
 	 * @param consulta
 	 * @return {@link ObservableList} Deportista
@@ -142,20 +165,6 @@ public class OlimpiadasDao {
 			}
 			conexion.CloseConexion();
 		}catch(SQLException e) {}		
-		return listaDeportista;
-	}
-
-	/**
-	 * Método que añade una condición de busqueda SQL(WHERE) a la consulta genérica de Deportista y llama a CrearListaDeportista()
-	 * para ejecutarla.
-	 * @param campoSeleccionado columna que se ejecutara el filtro.
-	 * @param txFiltro el valor que se quiere buscar.
-	 * @return lista de deportistas.
-	 */
-	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
-		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
-		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
-		listaDeportista = crearListaDeportista(consultaModificada);
 		return listaDeportista;
 	}
 
@@ -211,6 +220,13 @@ public class OlimpiadasDao {
 		
 	}
 	
+	public ObservableList<Evento> filtrarEvento(String campoSeleccionado, String txFiltro) {
+		ObservableList<Evento> listaEvento = FXCollections.observableArrayList();
+		String consultaModificada = consultaEvento + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaEvento = crearListaEvento(consultaModificada);
+		return listaEvento;
+	}
+	
 	/**
 	 *Crea una lista de eventos con la consulta pasada como parametro. 
 	 * @param consulta
@@ -234,7 +250,57 @@ public class OlimpiadasDao {
 			}
 			conexion.CloseConexion();
 		}catch(SQLException e) {}		
-		return listaEvento;
+		return listaEvento;		
+	}
+	public ObservableList<Olimpiada> cargarOlimpiada(){
+		ObservableList<Olimpiada> listaOlimpiada= FXCollections.observableArrayList();
+		String consultaModificada = consultaOlimpiada + ";";
+		listaOlimpiada= crearListaOlimpiada(consultaModificada);
+		return listaOlimpiada;
+	}
+
+	private ObservableList<Olimpiada> crearListaOlimpiada(String consulta) {
+		ObservableList<Olimpiada> listaOlimpiada= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nIdOlimpiada = rs.getInt("id_olimpiada");
+				String sNombre = rs.getString("nombre");
+				Integer nAnio = rs.getInt("anio");
+				String sTemporada = rs.getString("temporada");
+				String sCiudad = rs.getString("ciudad");
+				Olimpiada o = new Olimpiada(nIdOlimpiada, sNombre, nAnio, sTemporada, sCiudad);
+				listaOlimpiada.add(o);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {}		
+		return listaOlimpiada;
+	}
+
+	public ObservableList<Deporte> cargarDeporte() {
+		ObservableList<Deporte> listaDeporte= FXCollections.observableArrayList();
+		String consultaModificada = consultaDeporte + ";";
+		listaDeporte= crearListaDeporte(consultaModificada);
+		return listaDeporte;
 		
+	}
+
+	private ObservableList<Deporte> crearListaDeporte(String consulta) {
+		ObservableList<Deporte> listaDeporte= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nIdDeporte = rs.getInt("id_deporte");
+				String sNombre = rs.getString("nombre");
+				Deporte d = new Deporte(nIdDeporte, sNombre);
+				listaDeporte.add(d);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {}		
+		return listaDeporte;
 	}
 }
