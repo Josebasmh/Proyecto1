@@ -292,6 +292,20 @@ public class OlimpiadasDao {
 		return listaOlimpiada;
 	}
 
+	public boolean aniadirOlimpiada(Olimpiada o) {
+		String consulta = "INSERT INTO Olimpiada VALUES ("+o.getIdOlimpiada()+",'"+o.getNombre()+"',"+o.getAnio()+",'"+o.getTemporada()+"','"+o.getCiudad()+"');";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);			
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	/**
 	 * Crea una lista de Olimpiadas con la consulta pasada como parametro. 
 	 * @param consulta
@@ -351,6 +365,4 @@ public class OlimpiadasDao {
 		}catch(SQLException e) {}		
 		return listaDeporte;
 	}
-
-
 }
