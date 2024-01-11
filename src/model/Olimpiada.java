@@ -63,4 +63,11 @@ public class Olimpiada {
 	public void setTemporada(String temporada) {
 		this.temporada = temporada;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
+	
 }
