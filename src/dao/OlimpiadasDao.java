@@ -170,7 +170,7 @@ public class OlimpiadasDao {
 	/**
 	 * Añade a la BBDD el deportista del parámetro.
 	 * @param d deportista
-	 * @return true(añadido con éxito) / false(error al añadir)
+	 * @return true(añadido con éxito) / false(error al añadir).
 	 */
 	public boolean aniadirDeportista(Deportista d) {
 		String consulta = "INSERT INTO Deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
@@ -235,6 +235,11 @@ public class OlimpiadasDao {
 		return listaEvento;
 	}
 	
+	/**
+	 * Añade a la BBDD el evento del parámetro.
+	 * @param ev Evento.
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
 	public boolean aniadirEvento(Evento ev) {
 		String consulta = "INSERT INTO Evento VALUES ("+ev.getIdEvento()+",'"+ev.getNomEvento()+"','"+ev.getIdOlimpiada()+"',"+ev.getIdDeporte()+");";
 		try {
@@ -270,7 +275,7 @@ public class OlimpiadasDao {
 				listaEvento.add(e);
 			}
 			conexion.CloseConexion();
-		}catch(SQLException e) {}		
+		}catch(SQLException e) {e.printStackTrace();}		
 		return listaEvento;		
 	}
 	

@@ -54,7 +54,7 @@ public class EventoController implements Initializable{
     
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     OlimpiadasDao oDao = new OlimpiadasDao();
-    private String[]campos = {"Evento","Olimpiada","Deporte"};
+    private String[]campos = {"Nombre","Olimpiada","Deporte"};
 
     @FXML
     void aniadirDeporte(ActionEvent event) {
@@ -75,6 +75,17 @@ public class EventoController implements Initializable{
     void filtrar(KeyEvent event) {
 
     	String campoSeleccionado = cbBusqueda.getSelectionModel().getSelectedItem();
+    	switch (campoSeleccionado){
+    	case "Nombre":
+    		campoSeleccionado = "e.nombre";
+    		break;
+    	case "Olimpiada":
+    		campoSeleccionado = "o.nombre";
+    		break;
+    	case "Deporte":
+    		campoSeleccionado = "d.nombre";
+    		break;
+    	}
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Evento>listaFiltrada = oDao.filtrarEvento(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
