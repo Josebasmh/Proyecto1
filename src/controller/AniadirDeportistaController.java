@@ -57,10 +57,10 @@ public class AniadirDeportistaController implements Initializable{
     	boolean resultado = oDao.aniadirDeportista(d);
     	if (resultado) {
     		TablaGeneralController.ventanaAlerta("I", "Deportista añadido con éxito");
+    		Cancelar(event);
     	}else {
     		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deportista");
     	}
-    	Cancelar(event);
     }
 
     @FXML

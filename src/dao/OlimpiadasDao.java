@@ -7,14 +7,17 @@ import java.sql.SQLException;
 import conexion.ConexionBD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Deporte;
 import model.Deportista;
+import model.Evento;
+import model.Olimpiada;
 import model.Participacion;
 
 public class OlimpiadasDao {
 
 	private ConexionBD conexion;
 	
-	// ESTAS CONSULTAS ESTÁ SIN ; AL FINAL PARA UTILIZARLA EN DISTINTOS PROCESOS AÑADIENDOLES MÁS FILTROS \\
+	// ESTAS CONSULTAS ESTÁN SIN ; AL FINAL PARA UTILIZARLAS EN DISTINTOS PROCESOS AÑADIENDOLES MÁS FILTROS \\
 	private String consultaPrincipal = "SELECT Deportista.id_deportista,Evento.id_evento,Equipo.id_equipo,Deportista.nombre,Evento.nombre,Olimpiada.nombre,Deporte.nombre,Equipo.nombre,iniciales,edad,medalla "
 			+ "FROM Participacion,Deportista,Evento,Olimpiada,Deporte,Equipo "
 			+ "WHERE Deportista.id_deportista = Participacion.id_deportista "
@@ -26,6 +29,40 @@ public class OlimpiadasDao {
 	private String consultaDeportista = "SELECT id_deportista,nombre,sexo,peso,altura "
 			+ "FROM Deportista";
 	
+	private String consultaEvento = "SELECT e.id_evento,e.id_olimpiada,e.id_deporte,e.nombre as nomevento,o.nombre as nomolimpiada,d.nombre as nomdeporte "
+			+ "FROM Evento e "
+			+ "LEFT JOIN Olimpiada o on o.id_olimpiada = e.id_olimpiada "
+			+ "LEFT JOIN Deporte d on d.id_deporte = e.id_deporte";
+	
+	private String consultaOlimpiada = "SELECT id_olimpiada,nombre,anio,temporada,ciudad "
+			+ "FROM Olimpiada";
+	
+	private String consultaDeporte = "SELECT id_deporte,nombre "
+			+ "FROM Deporte";
+	
+	// GENÉRICOS \\
+	/**
+	 * Genera un ID nuevo contando los registros de la tabla que le pasamos como parametro e incrementa la cantidad 1.
+	 * @param tabla
+	 * @return ID generado.
+	 */
+	public Integer generarId(String tabla) {
+		Integer nId = 0;
+		String consulta = "SELECT COUNT(*) FROM " + tabla + ";";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				nId = rs.getInt(0);
+			}
+			conexion.CloseConexion();
+		} catch (SQLException e) {}
+		
+		return nId;
+	}
+	
+	// PARTICIPACION \\
 	/**
 	 * Carga todos los registros de la tabla Participacion.
 	 * @return ObservableList con Participacion
@@ -104,6 +141,7 @@ public class OlimpiadasDao {
 		return listaParticipacion;
 	}
 	
+	// DEPORTISTA \\
 	/**
 	 * Carga todos los registros de la tabla Deportista.
 	 * @return {@link ObservableList} Deportista
@@ -115,6 +153,38 @@ public class OlimpiadasDao {
 		return listaDeportista;
 	}
 
+	/**
+	 * Método que añade una condición de busqueda SQL(WHERE) a la consulta genérica de Deportista y llama a CrearListaDeportista()
+	 * para ejecutarla.
+	 * @param campoSeleccionado columna que se ejecutara el filtro.
+	 * @param txFiltro el valor que se quiere buscar.
+	 * @return lista de deportistas.
+	 */
+	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
+		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
+		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaDeportista = crearListaDeportista(consultaModificada);
+		return listaDeportista;
+	}
+
+	/**
+	 * Añade a la BBDD el deportista del parámetro.
+	 * @param d deportista
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
+	public boolean aniadirDeportista(Deportista d) {
+		String consulta = "INSERT INTO Deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * Crea una lista de deportistas con la consulta pasada como parametro.
 	 * @param consulta
@@ -140,48 +210,147 @@ public class OlimpiadasDao {
 		return listaDeportista;
 	}
 
+	// EVENTO \\
 	/**
-	 * Método que añade una condición de busqueda SQL(WHERE) a la consulta genérica de Deportista y llama a CrearListaDeportista()
-	 * para ejecutarla.
-	 * @param campoSeleccionado columna que se ejecutara el filtro.
-	 * @param txFiltro el valor que se quiere buscar.
+	 * Carga todos los registros de la tabla Evento.
+	 * @return lista de eventos.
+	 */
+	public ObservableList<Evento> cargarEvento() {
+		ObservableList<Evento> listaEvento= FXCollections.observableArrayList();
+		String consultaModificada =consultaEvento + ";";
+		listaEvento = crearListaEvento(consultaModificada);
+		return listaEvento;
+		
+	}
+	/**
+	 * Filtra los datos de participacion dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
+	 * @param campoSeleccionado
+	 * @param txFiltro
 	 * @return
 	 */
-	public ObservableList<Deportista> filtrarDeportista(String campoSeleccionado, String txFiltro) {
-		ObservableList<Deportista> listaDeportista = FXCollections.observableArrayList();
-		String consultaModificada = consultaDeportista + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
-		listaDeportista = crearListaDeportista(consultaModificada);
-		return listaDeportista;
+	public ObservableList<Evento> filtrarEvento(String campoSeleccionado, String txFiltro) {
+		ObservableList<Evento> listaEvento = FXCollections.observableArrayList();
+		String consultaModificada = consultaEvento + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaEvento = crearListaEvento(consultaModificada);
+		return listaEvento;
 	}
-
-	public Integer generarId(String tabla) {
-		Integer nId = 0;
-		String consulta = "SELECT COUNT(*) FROM " + tabla + ";";
+	
+	/**
+	 * Añade a la BBDD el evento del parámetro.
+	 * @param ev Evento.
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
+	public boolean aniadirEvento(Evento ev) {
+		String consulta = "INSERT INTO Evento VALUES ("+ev.getIdEvento()+",'"+ev.getNomEvento()+"','"+ev.getIdOlimpiada()+"',"+ev.getIdDeporte()+");";
 		try {
 			conexion = new ConexionBD();
 			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				nId = rs.getInt(0);
-			}
-			conexion.CloseConexion();
-		} catch (SQLException e) {}
-		
-		return nId;
-	}
-
-	public boolean aniadirDeportista(Deportista d) {
-		String consulta = "INSERT INTO Deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);
-			System.out.println(i);
+			int i = ps.executeUpdate(consulta);			
 			conexion.CloseConexion();
 			return true;
-		} catch (SQLException e) {	
-			e.printStackTrace();
+		} catch (SQLException e) {
 			return false;
 		}
 	}
+	
+	/**
+	 *Crea una lista de eventos con la consulta pasada como parametro. 
+	 * @param consulta
+	 * @return lista de eventos.
+	 */
+	private ObservableList<Evento> crearListaEvento(String consulta) {
+		ObservableList<Evento> listaEvento= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nIdEvento = rs.getInt("id_evento");
+				Integer nIdOlimpiada = rs.getInt("id_olimpiada");
+				Integer nIdDeporte= rs.getInt("id_deporte");
+				String sNomEvento = rs.getString("nomevento");
+				String sNomOlimpiada = rs.getString("nomolimpiada");
+				String sNomDeporte = rs.getString("nomdeporte");
+				Evento e = new Evento(nIdEvento, nIdOlimpiada, nIdDeporte, sNomEvento, sNomOlimpiada, sNomDeporte);
+				listaEvento.add(e);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {e.printStackTrace();}		
+		return listaEvento;		
+	}
+	
+	// OLIMPIADA \\
+	
+	/**
+	 * Carga todos los registros de la tabla Olimpiada.
+	 * @return lista de olimpiadas.
+	 */
+	public ObservableList<Olimpiada> cargarOlimpiada(){
+		ObservableList<Olimpiada> listaOlimpiada= FXCollections.observableArrayList();
+		String consultaModificada = consultaOlimpiada + ";";
+		listaOlimpiada= crearListaOlimpiada(consultaModificada);
+		return listaOlimpiada;
+	}
+
+	/**
+	 * Crea una lista de Olimpiadas con la consulta pasada como parametro. 
+	 * @param consulta
+	 * @return lista de olimpiadas.
+	 */
+	private ObservableList<Olimpiada> crearListaOlimpiada(String consulta) {
+		ObservableList<Olimpiada> listaOlimpiada= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nIdOlimpiada = rs.getInt("id_olimpiada");
+				String sNombre = rs.getString("nombre");
+				Integer nAnio = rs.getInt("anio");
+				String sTemporada = rs.getString("temporada");
+				String sCiudad = rs.getString("ciudad");
+				Olimpiada o = new Olimpiada(nIdOlimpiada, sNombre, nAnio, sTemporada, sCiudad);
+				listaOlimpiada.add(o);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {}		
+		return listaOlimpiada;
+	}
+
+	// DEPORTE \\
+	/**
+	 * Carga todos los registros de la tabla deporte.
+	 * @return lista de deportes.
+	 */
+	public ObservableList<Deporte> cargarDeporte() {
+		ObservableList<Deporte> listaDeporte= FXCollections.observableArrayList();
+		String consultaModificada = consultaDeporte + ";";
+		listaDeporte= crearListaDeporte(consultaModificada);
+		return listaDeporte;
+		
+	}
+
+	/**
+	 * Crea una lista de deportes con la consulta pasada como parametro. 
+	 * @param consulta
+	 * @return lista de deportes.
+	 */
+	private ObservableList<Deporte> crearListaDeporte(String consulta) {
+		ObservableList<Deporte> listaDeporte= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nIdDeporte = rs.getInt("id_deporte");
+				String sNombre = rs.getString("nombre");
+				Deporte d = new Deporte(nIdDeporte, sNombre);
+				listaDeporte.add(d);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {}		
+		return listaDeporte;
+	}
+
+
 }
