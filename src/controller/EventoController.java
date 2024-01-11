@@ -119,7 +119,7 @@ public class EventoController implements Initializable{
 	}
 	
 	/**
-	 * 
+	 * Abrir ventana auxiliar.
 	 * @param f fxml
 	 * @param t titulo
 	 * @param altura
