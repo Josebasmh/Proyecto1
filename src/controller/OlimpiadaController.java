@@ -49,7 +49,7 @@ public class OlimpiadaController {
 
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
-    	
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
     }
 
     @FXML
