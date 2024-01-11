@@ -57,6 +57,10 @@ public class OlimpiadaController implements Initializable{
     OlimpiadasDao oDao = new OlimpiadasDao();
     String[] campos = {};
 
+    /**
+     * Abre la ventana para añadir una olimpiada.
+     * @param event
+     */
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);

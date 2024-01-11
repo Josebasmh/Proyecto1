@@ -61,14 +61,22 @@ public class EventoController implements Initializable{
 
     }
 
+    /**
+     * Abre la ventana para añadir un evento.
+     * @param event
+     */
     @FXML
     void aniadirEvento(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirEvento", "AÑADIR EVENTO", 380, 460);
     }
-
+    
+    /**
+     * Abre la ventana para añadir una olimpiada.
+     * @param event
+     */
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
     }
 
     @FXML
