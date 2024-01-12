@@ -22,9 +22,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Deportista;
 import model.Evento;
-import model.Participacion;
 
 public class EventoController implements Initializable{
 
@@ -58,7 +56,7 @@ public class EventoController implements Initializable{
 
     @FXML
     void aniadirDeporte(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirDeporte", "AÑADIR DEPORTE", 450, 190);
     }
 
     /**
