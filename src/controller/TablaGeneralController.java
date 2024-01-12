@@ -100,9 +100,13 @@ public class TablaGeneralController implements Initializable{
     	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS",800,600);
     }
     
+    /**
+     * Inicia la ventana AñadirDeporte.
+     * @param event
+     */
     @FXML
     void aniadirDeporte(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirDeporte", "AÑADIR DEPORTE", 450, 190);
     }
 
     /**

@@ -406,4 +406,24 @@ public class OlimpiadasDao {
 			return false;
 		}
 	}
+
+	// DEPORTE \\
+	
+	/**
+	 * Añade a la BBDD el deporte del parámetro.
+	 * @param d Deporte
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
+	public boolean aniadirDeporte(Deporte d) {
+		String consulta = "INSERT INTO Deporte VALUES ("+d.getIdDeporte()+",'"+d.getNombre()+"');";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);			
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 }
