@@ -63,5 +63,10 @@ public class Deportista {
 
 	public void setAltura(Integer altura) {
 		this.altura = altura;
-	}	
+	}
+	
+	@Override
+	public String toString() {
+		return nombre;
+	}
 }

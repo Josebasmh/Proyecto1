@@ -41,6 +41,9 @@ public class OlimpiadasDao {
 	private String consultaDeporte = "SELECT id_deporte,nombre "
 			+ "FROM Deporte";
 	
+	private String consultaEquipo = "SELECT id_equipo,nombre,iniciales "
+			+ "FROM Equipo";
+	
 	// GENÉRICOS \\
 	/**
 	 * Genera un ID nuevo contando los registros de la tabla que le pasamos como parametro e incrementa la cantidad 1.
@@ -107,6 +110,24 @@ public class OlimpiadasDao {
 			listaParticipacion = cargarParticipacion();
 		}
 		return listaParticipacion;
+	}
+	
+	/**
+	 * Añade a la BBDD la participación del parámetro.
+	 * @param p Participacion
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
+	public boolean aniadirParticipacion(Participacion p) {
+		String consulta = "INSERT INTO Participacion VALUES ("+p.getIdDeportista()+",'"+p.getIdEvento()+"','"+p.getIdEquipo()+"',"+p.getEdad()+",'"+p.getMedalla()+"');";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 	
 	/**
@@ -406,9 +427,35 @@ public class OlimpiadasDao {
 			return false;
 		}
 	}
+	
+	public ObservableList<Equipo> cargarEquipo() {
+		ObservableList<Equipo> listaEquipo= FXCollections.observableArrayList();
+		String consultaModificada = consultaEquipo+ ";";
+		listaEquipo = crearListaEquipo(consultaModificada);
+		return listaEquipo;
+	}
+
+	
+	private ObservableList<Equipo> crearListaEquipo(String consulta) {
+		ObservableList<Equipo> listaDeporte= FXCollections.observableArrayList();
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int nIdDeporte = rs.getInt("id_equipo");
+				String sNombre = rs.getString("nombre");
+				String sIniciales = rs.getString("iniciales");
+				Equipo e = new Equipo(nIdDeporte, sNombre, sIniciales);
+				listaDeporte.add(e);
+			}
+			conexion.CloseConexion();
+		}catch(SQLException e) {}		
+		return listaDeporte;
+	}
 
 	// DEPORTE \\
-	
+
 	/**
 	 * Añade a la BBDD el deporte del parámetro.
 	 * @param d Deporte

@@ -34,6 +34,20 @@ public class Participacion {
 		edad = ed;
 		medalla = meda;
 	}
+	
+	public Participacion(Deportista d, Evento ev, Equipo eq, Integer nEdad, String sMedalla) {
+		idDeportista = d.getIdDeportista();
+		idEvento = ev.getIdEvento();
+		idEquipo = eq.getIdEquipo();
+		nomDeportista = d.getNombre();
+		nomEvento = ev.getNomEvento();
+		nomOlimpiada = ev.getNomOlimpiada();
+		nomDeporte = ev.getNomDeporte();
+		nomEquipo = eq.getNombre();
+		abreviaturaEquipo = eq.getIniciales();
+		edad = nEdad;
+		medalla = sMedalla;
+	}
 
 	// METODOS GETTER Y SETTER
 	  

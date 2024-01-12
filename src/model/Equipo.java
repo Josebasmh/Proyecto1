@@ -42,4 +42,10 @@ public class Equipo {
 	public void setIniciales(String iniciales) {
 		this.iniciales = iniciales;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
 }

@@ -147,7 +147,7 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     void aniadirParticipacion(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirParticipacion", "AÑADIR PARTICIPACION", 500, 450);
     }
 
     /**

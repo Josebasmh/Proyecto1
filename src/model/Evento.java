@@ -73,4 +73,10 @@ public class Evento {
 	public void setIdDeporte(Integer idDeporte) {
 		this.idDeporte = idDeporte;
 	}
+
+	@Override
+	public String toString() {
+		return nomEvento;
+	}
+	
 }
