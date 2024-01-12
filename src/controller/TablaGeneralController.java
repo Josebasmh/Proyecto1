@@ -105,21 +105,37 @@ public class TablaGeneralController implements Initializable{
 
     }
 
+    /**
+     * Inicia la ventana Añadir Deportista.
+     * @param event
+     */
     @FXML
     void aniadirDeportista(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA",450,500);
+    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA", 500, 450);
     }
 
+    /**
+     * Inicia la ventana Añadir Equipo.
+     * @param event
+     */
     @FXML
     void aniadirEquipo(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirEquipo", "AÑADIR EQUIPO", 380, 460);
     }
 
+    /**
+     * Inicia la ventana Añadir Evento.
+     * @param event
+     */
     @FXML
     void aniadirEvento(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirEvento", "AÑADIR EVENTO", 380, 460);
     }
 
+    /**
+     * Inicia la ventana Añadir Olimpiada.
+     * @param event
+     */
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
@@ -141,12 +157,6 @@ public class TablaGeneralController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Participacion>listaFiltrada = oDao.filtrarParticipaciones(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
-    }
-
-    @FXML
-    void ventanaAyuda(ActionEvent event) {
-
-    	
     }
 
     /**

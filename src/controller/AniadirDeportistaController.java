@@ -40,6 +40,11 @@ public class AniadirDeportistaController implements Initializable{
     
     OlimpiadasDao oDao;
 
+    /**
+     * Al pulsar el botón genera un deportista y lo añade en la base de datos.
+     * @param event
+     * @throws Throwable
+     */
     @FXML
     void Aceptar(ActionEvent event) throws Throwable {
 
@@ -63,6 +68,11 @@ public class AniadirDeportistaController implements Initializable{
     	}
     }
 
+    /**
+     * Cierra la ventana
+     * @param event
+     * @throws Throwable
+     */
     @FXML
     void Cancelar(ActionEvent event) throws Throwable {
     	Node node = (Node)event.getSource();

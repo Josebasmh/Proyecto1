@@ -32,11 +32,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#aniadirDeporte" text="Deporte" />
             </items>
           </Menu>
-          <Menu fx:id="mAyuda" mnemonicParsing="false" text="Ayuda">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#ventanaAyuda" text="¿Qué es esto?" />
-            </items>
-          </Menu>
         </menus>
          <FlowPane.margin>
             <Insets />

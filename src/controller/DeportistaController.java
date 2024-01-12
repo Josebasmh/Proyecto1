@@ -58,27 +58,13 @@ public class DeportistaController implements Initializable{
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Nombre","Sexo","Peso","Altura"};
 
+    /**
+     * Abre la ventana para añadir Deportistas
+     * @param event
+     */
     @FXML
     void aniadirDeportista(ActionEvent event) {
-
-    	Stage stage = new Stage();
-		try {
-			FlowPane root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/VentanaAñadirDeportista.fxml"));
-			stage.setTitle("AÑADIR DEPORTISTA");
-			Scene scene = new Scene(root,450,500);
-			stage.setScene(scene);
-			stage.setMinWidth(450);
-			stage.setMinHeight(500);
-			stage.setMaxWidth(450);
-			stage.setMaxHeight(500);
-			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.show();
-			ObservableList<Deportista> listaDeportista = oDao.cargarDeportista();
-			cargarTabla(listaDeportista);
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
+		ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA", 450, 500);
     }
 
     /**
@@ -118,5 +104,30 @@ public class DeportistaController implements Initializable{
 		
 		tvTabla.setItems(listaDeportista);
 	}
-
+	
+	/**
+	 * Abrir ventana auxiliar.
+	 * @param f fxml
+	 * @param t titulo
+	 * @param altura
+	 * @param anchura
+	 */
+	private void ventanaSecundaria(String f, String t,Integer altura,Integer anchura) {
+		Stage stage = new Stage();
+		try {
+			FlowPane root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/"+f+".fxml"));
+			stage.setTitle(t);
+			Scene scene = new Scene(root,altura,anchura);
+			stage.setScene(scene);
+			stage.setMinWidth(altura);
+			stage.setMinHeight(anchura);
+			stage.setMaxWidth(altura);
+			stage.setMaxHeight(anchura);
+			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.show();	
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	} 
 }

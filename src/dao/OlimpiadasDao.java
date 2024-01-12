@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Deporte;
 import model.Deportista;
+import model.Equipo;
 import model.Evento;
 import model.Olimpiada;
 import model.Participacion;
@@ -223,7 +224,7 @@ public class OlimpiadasDao {
 		
 	}
 	/**
-	 * Filtra los datos de participacion dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
+	 * Filtra los datos de evento dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
 	 * @param campoSeleccionado
 	 * @param txFiltro
 	 * @return
@@ -292,6 +293,12 @@ public class OlimpiadasDao {
 		return listaOlimpiada;
 	}
 
+	/**
+	 * Filtra los datos de olimpiada dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
+	 * @param campoSeleccionado
+	 * @param txFiltro valor del campo.
+	 * @return lista de olimpiadas.
+	 */
 	public ObservableList<Olimpiada> filtrarOlimpiada(String campoSeleccionado, String txFiltro) {
 		ObservableList<Olimpiada> listaOlimpiada = FXCollections.observableArrayList();
 		if (campoSeleccionado.equals("Año")) {campoSeleccionado = "anio";}
@@ -300,6 +307,11 @@ public class OlimpiadasDao {
 		return listaOlimpiada;
 	}
 	
+	/**
+	 * Añade a la BBDD la olimpiada del parámetro.
+	 * @param o
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
 	public boolean aniadirOlimpiada(Olimpiada o) {
 		String consulta = "INSERT INTO Olimpiada VALUES ("+o.getIdOlimpiada()+",'"+o.getNombre()+"',"+o.getAnio()+",'"+o.getTemporada()+"','"+o.getCiudad()+"');";
 		try {
@@ -340,6 +352,7 @@ public class OlimpiadasDao {
 	}
 
 	// DEPORTE \\
+	
 	/**
 	 * Carga todos los registros de la tabla deporte.
 	 * @return lista de deportes.
@@ -372,5 +385,25 @@ public class OlimpiadasDao {
 			conexion.CloseConexion();
 		}catch(SQLException e) {}		
 		return listaDeporte;
+	}
+
+	// EQUIPO \\
+	
+	/**
+	 * Añade a la BBDD la olimpiada del parámetro.
+	 * @param eq
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
+	public boolean aniadirEquipo(Equipo eq) {
+		String consulta = "INSERT INTO Equipo VALUES ("+eq.getIdEquipo()+",'"+eq.getNombre()+"','"+eq.getIniciales()+"');";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);			
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 }

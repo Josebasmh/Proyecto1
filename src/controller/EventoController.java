@@ -79,6 +79,11 @@ public class EventoController implements Initializable{
     	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
     }
 
+    /**
+     * Filtra los registros de la tabla dependiendo del campo  del CoiceBox y el valor insertado 
+     * en el TextField. 
+     * @param event
+     */
     @FXML
     void filtrar(KeyEvent event) {
 
@@ -97,11 +102,6 @@ public class EventoController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Evento>listaFiltrada = oDao.filtrarEvento(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
-    }
-
-    @FXML
-    void ventanaAyuda(ActionEvent event) {
-
     }
 
     /**

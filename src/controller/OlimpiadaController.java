@@ -66,6 +66,10 @@ public class OlimpiadaController implements Initializable{
     	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
     }
 
+    /**
+     * Filtra los registros dependiendo del campo del ChoiceBox y el texto del TextField.
+     * @param event
+     */
     @FXML
     void filtrar(KeyEvent event) {
     	String campoSeleccionado = cbBusqueda.getSelectionModel().getSelectedItem();
@@ -73,12 +77,10 @@ public class OlimpiadaController implements Initializable{
     	ObservableList<Olimpiada>listaFiltrada = oDao.filtrarOlimpiada(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
     }
-
-    @FXML
-    void ventanaAyuda(ActionEvent event) {
-
-    }
     
+    /**
+     * Carga los campos del ChoiceBox y sincroniza la tabla con la BBDD.
+     */
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
     	cbBusqueda.getItems().addAll(campos);
@@ -86,6 +88,10 @@ public class OlimpiadaController implements Initializable{
 		cargarTabla(olimpiadas);
 	}
     
+    /**
+     * Sincroniza los campos de la tabla con los de la BBDD y añade olimpiadas a la tabla.
+     * @param olimpiadas
+     */
 	private void cargarTabla(ObservableList<Olimpiada> olimpiadas) {
 		tcNombre.setCellValueFactory(new PropertyValueFactory<Olimpiada, String>("nombre"));
 		tcAnio.setCellValueFactory(new PropertyValueFactory<Olimpiada, Integer>("anio"));

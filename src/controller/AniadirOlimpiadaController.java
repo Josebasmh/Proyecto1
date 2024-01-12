@@ -27,6 +27,10 @@ public class AniadirOlimpiadaController implements Initializable{
     OlimpiadasDao oDao = new OlimpiadasDao();
     String[] campos = {"Summer","Winter"};
 
+    /**
+     * Genera una olimpiada y la añade a la BBDD.
+     * @param event
+     */
     @FXML
     void Aceptar(ActionEvent event) {
 
@@ -45,6 +49,10 @@ public class AniadirOlimpiadaController implements Initializable{
     	}
     }
 
+    /**
+     * Cierra la ventana.
+     * @param event
+     */
     @FXML
     void Cancelar(ActionEvent event) {
     	Node node = (Node)event.getSource();
@@ -52,6 +60,9 @@ public class AniadirOlimpiadaController implements Initializable{
     	stage.close();
     }
 
+    /**
+     * Añade los campos 'Summer' y 'Winter' en el ChoiceBox
+     */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cbTemporada.getItems().addAll(campos);

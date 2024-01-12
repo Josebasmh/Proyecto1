@@ -32,7 +32,10 @@ public class AniadirEventoController implements Initializable{
     OlimpiadasDao oDao = new OlimpiadasDao();
     
     
-
+    /**
+     * Genera un Evento y lo añade a la BBDD.
+     * @param event
+     */
     @FXML
     void Aceptar(ActionEvent event) {
 
@@ -50,6 +53,10 @@ public class AniadirEventoController implements Initializable{
     	}
     }
 
+    /**
+     * Cierra la ventana.
+     * @param event
+     */
     @FXML
     void Cancelar(ActionEvent event) {
     	Node node = (Node)event.getSource();
@@ -57,6 +64,9 @@ public class AniadirEventoController implements Initializable{
     	stage.close();
     }
 
+    /**
+     * al iniciar la ventana carga las olimpiadas y deportes para añadir a los ChoiceBox.
+     */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ObservableList<Olimpiada> listaOlimpiada= oDao.cargarOlimpiada();
