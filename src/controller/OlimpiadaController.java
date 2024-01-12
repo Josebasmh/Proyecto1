@@ -55,7 +55,7 @@ public class OlimpiadaController implements Initializable{
     private TableView<Olimpiada> tvTabla;
     
     OlimpiadasDao oDao = new OlimpiadasDao();
-    String[] campos = {};
+    String[] campos = {"Nombre","Año","Temporada","Ciudad"};
 
     /**
      * Abre la ventana para añadir una olimpiada.
@@ -68,7 +68,10 @@ public class OlimpiadaController implements Initializable{
 
     @FXML
     void filtrar(KeyEvent event) {
-
+    	String campoSeleccionado = cbBusqueda.getSelectionModel().getSelectedItem();
+    	String txFiltro = tfBusqueda.getText().toString();
+    	ObservableList<Olimpiada>listaFiltrada = oDao.filtrarOlimpiada(campoSeleccionado, txFiltro);
+    	cargarTabla(listaFiltrada);
     }
 
     @FXML
