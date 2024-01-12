@@ -122,7 +122,7 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
-
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
     }
 
     @FXML
