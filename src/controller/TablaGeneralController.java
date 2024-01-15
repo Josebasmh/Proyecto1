@@ -13,7 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,7 +31,10 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     private ChoiceBox<String> cbBusqueda;
-
+    
+    @FXML
+    private ContextMenu cmTabla;
+    
     @FXML
     private Menu mAyuda;
 
@@ -38,6 +43,12 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     private Menu mTablas;
+    
+    @FXML
+    private MenuItem miEliminar;
+
+    @FXML
+    private MenuItem miModificar;
 
     @FXML
     private TableColumn<Participacion, String> tcAbreviatura;
@@ -72,6 +83,7 @@ public class TablaGeneralController implements Initializable{
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Deportista","Evento","Olimpiada","Deporte","Equipo","Abreviatura","Edad","Medalla"};
+    static Participacion pModificar;
 
     /**
      * Método para iniciar la tabla Deportista
@@ -163,6 +175,11 @@ public class TablaGeneralController implements Initializable{
     	cargarTabla(listaFiltrada);
     }
 
+    @FXML
+    void modificar(ActionEvent event) {
+    		pModificar = tvTabla.getSelectionModel().getSelectedItem();
+    		aniadirParticipacion(event);
+    }
     /**
      * Cuando se inicia la ventana, añade todos los registros de la tabla Participacion de la bbdd en la tabla de la ventana y 
      * rellena el choicebox para seleccionar el campo que queremos filtrar.

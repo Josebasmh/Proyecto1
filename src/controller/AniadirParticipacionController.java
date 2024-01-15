@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import dao.OlimpiadasDao;
@@ -74,5 +75,31 @@ public class AniadirParticipacionController implements Initializable{
 		cbEquipo.getItems().addAll(listaEquipo);
 		cbEvento.getItems().addAll(listaEvento);
 		cbMedalla.getItems().addAll(medallas);
+		
+		Participacion p = TablaGeneralController.pModificar;
+		if (p.getIdDeportista()!=0) {
+			Deportista d;
+			Evento ev;
+			Equipo eq;
+			
+			Iterator<Deportista> itDep = listaDeportistas.iterator();
+			Iterator<Evento> itEv = listaEvento.iterator();
+			
+			
+			while (itDep.hasNext()) {
+				Deportista dep = itDep.next();
+				if (p.getIdDeportista()==dep.getIdDeportista()) {
+					d = dep;
+				}
+			}
+			while (itEv.hasNext()) {
+				Evento even = itEv.next();
+				if (p.getIdEvento()==even.getIdEvento()) {
+					ev = even;
+				}
+			}
+			while ()
+			
+		}
 	}
 }
