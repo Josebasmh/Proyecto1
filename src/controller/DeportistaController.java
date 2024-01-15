@@ -25,6 +25,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Deportista;
+import model.Participacion;
 
 public class DeportistaController implements Initializable{
 
@@ -68,6 +69,7 @@ public class DeportistaController implements Initializable{
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Nombre","Sexo","Peso","Altura"};
+    static Deportista gDepModificar;
 
     /**
      * Abre la ventana para añadir Deportistas
@@ -89,6 +91,20 @@ public class DeportistaController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Deportista>listaFiltrada = oDao.filtrarDeportista(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
+    }
+	
+    @FXML
+    void modificar(ActionEvent event) {
+    	gDepModificar = tvTabla.getSelectionModel().getSelectedItem();
+    	ventanaSecundaria("VentanaAñadirDeportista", "MODIFICAR DEPORTISTA", 450, 500);
+		ObservableList<Deportista>listaDeportistas= oDao.cargarDeportista();
+		tvTabla.setItems(listaDeportistas);
+		gDepModificar=null;
+    }
+
+	@FXML
+    void eliminar(ActionEvent event) {
+
     }
 
     /**
@@ -115,16 +131,6 @@ public class DeportistaController implements Initializable{
 		
 		tvTabla.setItems(listaDeportista);
 	}
-	
-	@FXML
-    void eliminar(ActionEvent event) {
-
-    }
-	
-    @FXML
-    void modificar(ActionEvent event) {
-
-    }
 	
 	/**
 	 * Abrir ventana auxiliar.

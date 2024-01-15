@@ -231,6 +231,23 @@ public class OlimpiadasDao {
 		}
 	}
 	
+	public boolean modificarDeportista(Deportista d) {
+		String consulta = "UPDATE Deportista SET nombre='"+d.getNombre()+
+				"',sexo='"+d.getSexo()+"'"+
+				",peso="+d.getPeso()+
+				",altura="+d.getAltura()+
+				" WHERE id_deportista="+d.getIdDeportista()+";";
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * Crea una lista de deportistas con la consulta pasada como parametro.
 	 * @param consulta

@@ -38,7 +38,9 @@ public class AniadirDeportistaController implements Initializable{
     @FXML
     private ToggleGroup tgSexo;
     
-    OlimpiadasDao oDao;
+    private OlimpiadasDao oDao;
+    private boolean modificar;
+    private Deportista d;
 
     /**
      * Al pulsar el botón genera un deportista y lo añade en la base de datos.
@@ -48,24 +50,40 @@ public class AniadirDeportistaController implements Initializable{
     @FXML
     void Aceptar(ActionEvent event) throws Throwable {
 
-    	int nId = oDao.generarId("Deportista");
-    	String sNombre = tfNombre.getText();
-    	Character cSexo;
-    	if (rbM.isSelected()) {
-    		cSexo = 'M';
-    	}else {
-    		cSexo = 'F';
-    	}
-    	Integer nPeso = Integer.parseInt(tfPeso.getText());
-    	Integer nAltura = Integer.parseInt(tfAltura.getText());
-    	Deportista d = new Deportista(nId, sNombre, cSexo, nPeso, nAltura);
-    	boolean resultado = oDao.aniadirDeportista(d);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Deportista añadido con éxito");
-    		Cancelar(event);
-    	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deportista");
-    	}
+    	String errores = "";
+    	try{
+    		int nId = oDao.generarId("Deportista");
+        	String sNombre = tfNombre.getText();
+        	Character cSexo;
+        	if (rbM.isSelected()) {
+        		cSexo = 'M';
+        	}else {
+        		cSexo = 'F';
+        	}
+        	Integer nPeso = 0,nAltura = 0;        	
+        	try {nPeso = Integer.parseInt(tfPeso.getText());}catch(Exception e) {errores+="El campo Peso debe tener un número entero positivo.\n";}        	
+        	try{nAltura = Integer.parseInt(tfAltura.getText());}catch(Exception e) {errores+="El campo Altura debe tener un número entero positivo.\n";}
+        	if (!errores.equals("")) {
+        		TablaGeneralController.ventanaAlerta("E", errores);
+        	}else {
+        		boolean resultado = false;        		
+        		if(!modificar) {
+        			Deportista subd = new Deportista(nId, sNombre, cSexo, nPeso, nAltura);
+        			resultado = oDao.aniadirDeportista(subd);
+        		}else {
+        			Deportista subd = new Deportista(d.getIdDeportista(), sNombre, cSexo, nPeso, nAltura);
+        			resultado = oDao.modificarDeportista(subd);
+        		}            	
+            	if (resultado) {
+            		TablaGeneralController.ventanaAlerta("I", "Deportista añadido con éxito");
+            		Cancelar(event);
+            	}else {
+            		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deportista");
+            	}
+        	}
+    	}catch(Exception e) {
+    		TablaGeneralController.ventanaAlerta("E", "Los campos nombre y sexo son obligatorios");
+    	}    	
     }
 
     /**
@@ -77,13 +95,32 @@ public class AniadirDeportistaController implements Initializable{
     void Cancelar(ActionEvent event) throws Throwable {
     	Node node = (Node)event.getSource();
     	Stage stage = (Stage) node.getScene().getWindow();
+    	d=null;
     	stage.close();
     }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		modificar = false;
 		oDao = new OlimpiadasDao();
 		
+		try {
+			d = DeportistaController.gDepModificar;
+			System.out.println(d.getIdDeportista()+","+d.getNombre());
+			modificar = true;
+			mostrarDatosModificar(d);
+		}catch(Exception e) {}
+	}
+
+	private void mostrarDatosModificar(Deportista d) {
+		tfNombre.setText(d.getNombre());
+		if (d.getSexo().equals('F')) {
+			rdF.setSelected(true);
+		}else {
+			rbM.setSelected(true);
+		}
+		tfPeso.setText(d.getPeso().toString());
+		tfAltura.setText(d.getAltura().toString());		
 	}
 
 }

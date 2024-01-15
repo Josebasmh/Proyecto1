@@ -45,7 +45,6 @@ public class AniadirParticipacionController implements Initializable{
     @FXML
     void Aceptar(ActionEvent event) {
     	try {
-    		int nId = oDao.generarId("Participacion");
         	Deportista d = cbDeportista.getSelectionModel().getSelectedItem();
         	Equipo eq = cbEquipo.getSelectionModel().getSelectedItem();
         	Evento ev = cbEvento.getSelectionModel().getSelectedItem();
