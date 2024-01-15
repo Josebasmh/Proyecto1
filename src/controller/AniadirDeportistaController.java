@@ -98,7 +98,10 @@ public class AniadirDeportistaController implements Initializable{
     	d=null;
     	stage.close();
     }
-
+    
+    /**
+     * Al iniciar, comprueba si se le llamó para modificar o añadir, y guarda el deportista.
+     */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		modificar = false;
@@ -112,6 +115,10 @@ public class AniadirDeportistaController implements Initializable{
 		}catch(Exception e) {}
 	}
 
+	/**
+	 * Muestra los datos del deportista en la ventana.
+	 * @param d Deportista
+	 */
 	private void mostrarDatosModificar(Deportista d) {
 		tfNombre.setText(d.getNombre());
 		if (d.getSexo().equals('F')) {

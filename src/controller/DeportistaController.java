@@ -93,6 +93,10 @@ public class DeportistaController implements Initializable{
     	cargarTabla(listaFiltrada);
     }
 	
+    /**
+     * Modifica el registro seleccionado en la tabla.
+     * @param event
+     */
     @FXML
     void modificar(ActionEvent event) {
     	gDepModificar = tvTabla.getSelectionModel().getSelectedItem();

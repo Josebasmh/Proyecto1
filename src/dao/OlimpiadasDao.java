@@ -231,6 +231,11 @@ public class OlimpiadasDao {
 		}
 	}
 	
+	/**
+	 * Cambia el Deportista de la BBDD por el pasado por parámetro. 
+	 * @param d
+	 * @return
+	 */
 	public boolean modificarDeportista(Deportista d) {
 		String consulta = "UPDATE Deportista SET nombre='"+d.getNombre()+
 				"',sexo='"+d.getSexo()+"'"+
