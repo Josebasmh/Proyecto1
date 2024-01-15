@@ -35,6 +35,14 @@ public class Participacion {
 		medalla = meda;
 	}
 	
+	/**
+	 * Clase dirigida a la tabla general.
+	 * @param d Deportista
+	 * @param ev Evento
+	 * @param eq Equipo
+	 * @param nEdad Edad
+	 * @param sMedalla Medalla
+	 */
 	public Participacion(Deportista d, Evento ev, Equipo eq, Integer nEdad, String sMedalla) {
 		idDeportista = d.getIdDeportista();
 		idEvento = ev.getIdEvento();

@@ -38,7 +38,12 @@ public class AniadirParticipacionController implements Initializable{
     
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[] medallas = {"Gold","Silver","Bronze","N/A"};
+    private boolean modificar=false;
 
+    /**
+     * Inserta los datos de la ventana en una participación y añadirá/modificará dependiendo desde donde se haya abierto la ventana. 
+     * @param event
+     */
     @FXML
     void Aceptar(ActionEvent event) {
     	int nId = oDao.generarId("Participacion");
@@ -49,7 +54,12 @@ public class AniadirParticipacionController implements Initializable{
     	String sMedalla = cbMedalla.getSelectionModel().getSelectedItem();
     	
     	Participacion p = new Participacion(d, ev, eq, nEdad, sMedalla);
-    	boolean resultado = oDao.aniadirParticipacion(p);
+    	boolean resultado;
+    	if (modificar) {
+    		resultado = oDao.modificarParticipacion(p);
+    	}else {
+    		resultado = oDao.aniadirParticipacion(p);
+    	}
     	if (resultado) {
     		TablaGeneralController.ventanaAlerta("I", "Participación añadida con éxito");
     		Cancelar(event);
@@ -58,13 +68,21 @@ public class AniadirParticipacionController implements Initializable{
     	}
     }
 
+    /**
+     * Cierra la ventana actual.
+     * @param event
+     */
     @FXML
-    void Cancelar(ActionEvent event) {
+    void Cancelar(ActionEvent event) {    	
     	Node node = (Node)event.getSource();
     	Stage stage = (Stage) node.getScene().getWindow();
     	stage.close();
     }
 
+    /**
+     * Al iniciar, carga los deportistas, eventos, equipos y medallas de la BBDD y los añade a sus respectivos ChoiceBox.
+     * También controla si se va a añadir o modificar en la BBDD.
+     */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ObservableList<Deportista> listaDeportistas = oDao.cargarDeportista();
@@ -76,22 +94,35 @@ public class AniadirParticipacionController implements Initializable{
 		cbEvento.getItems().addAll(listaEventos);
 		cbMedalla.getItems().addAll(medallas);
 		
-		Participacion p = TablaGeneralController.pModificar;
-		if (p.getIdDeportista()!=0) {
-			ObservableList<Deportista>listaDeportista = oDao.filtrarDeportista("id_deportista", p.getIdDeportista()+"");
-			ObservableList<Evento>listaEvento = oDao.filtrarEvento("id_evento", p.getIdEvento()+"");
-			ObservableList<Equipo>listaEquipo = oDao.filtrarEquipo("id_equipo", p.getIdEquipo()+"");
-			System.out.println(listaEquipo.get(0).getIdEquipo());
-						
-			Deportista d = listaDeportista.get(0);
-			Evento ev = listaEvento.get(0);
-			Equipo eq= listaEquipo.get(0);
-			
-			cbDeportista.getSelectionModel().select(d);
-			cbEvento.getSelectionModel().select(ev);
-			cbEquipo.getSelectionModel().select(eq);
-			tfEdad.setText(p.getEdad().toString());
-			cbMedalla.getSelectionModel().select(p.getMedalla());
-		}
+		try {
+			Participacion p = TablaGeneralController.pModificar;
+			modificar=true;
+			mostrarDatosModificar(p);
+		}catch(Exception e) {}		
+	}
+
+	/**
+	 * Carga los datos de la participacion pasada como parámetro en la ventana. Desactiva los ChoiceBox de deportista y evento (Clave primaria compuesta). 
+	 * @param p
+	 */
+	private void mostrarDatosModificar(Participacion p) {
+		ObservableList<Deportista>listaDeportista = oDao.filtrarDeportista("id_deportista", p.getIdDeportista()+"");
+		ObservableList<Evento>listaEvento = oDao.filtrarEvento("id_evento", p.getIdEvento()+"");
+		ObservableList<Equipo>listaEquipo = oDao.filtrarEquipo("id_equipo", p.getIdEquipo()+"");
+					
+		Deportista d = listaDeportista.get(0);
+		Evento ev = listaEvento.get(0);
+		Equipo eq= listaEquipo.get(0);
+		
+		cbDeportista.getSelectionModel().select(d);
+		cbEvento.getSelectionModel().select(ev);
+		cbEquipo.getSelectionModel().select(eq);
+		tfEdad.setText(p.getEdad().toString());
+		cbMedalla.getSelectionModel().select(p.getMedalla());
+		
+		cbDeportista.setDisable(true);
+		cbEvento.setDisable(true);
+		
+		
 	}
 }

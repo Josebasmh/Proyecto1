@@ -175,10 +175,15 @@ public class TablaGeneralController implements Initializable{
     	cargarTabla(listaFiltrada);
     }
 
+    /**
+     * Modifica la participación seleccionada en la tabla. 
+     * @param event
+     */
     @FXML
-    void modificar(ActionEvent event) {
+    void modificar(ActionEvent event) {    		
     		pModificar = tvTabla.getSelectionModel().getSelectedItem();    		
-    		aniadirParticipacion(event);
+    		ventanaSecundaria("VentanaAñadirParticipacion", "MODIFICAR PARTICIPACION", 500, 450);
+    		pModificar=null;
     }
     
     @FXML
@@ -235,7 +240,7 @@ public class TablaGeneralController implements Initializable{
 			stage.setMaxHeight(anchura);
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.show();	
+			stage.show();
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
