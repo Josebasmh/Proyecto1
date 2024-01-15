@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import dao.OlimpiadasDao;
@@ -13,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Deporte;
 import model.Deportista;
 import model.Equipo;
 import model.Evento;
@@ -46,26 +44,36 @@ public class AniadirParticipacionController implements Initializable{
      */
     @FXML
     void Aceptar(ActionEvent event) {
-    	int nId = oDao.generarId("Participacion");
-    	Deportista d = cbDeportista.getSelectionModel().getSelectedItem();
-    	Equipo eq = cbEquipo.getSelectionModel().getSelectedItem();
-    	Evento ev = cbEvento.getSelectionModel().getSelectedItem();
-    	Integer nEdad = Integer.parseInt(tfEdad.getText());
-    	String sMedalla = cbMedalla.getSelectionModel().getSelectedItem();
-    	
-    	Participacion p = new Participacion(d, ev, eq, nEdad, sMedalla);
-    	boolean resultado;
-    	if (modificar) {
-    		resultado = oDao.modificarParticipacion(p);
-    	}else {
-    		resultado = oDao.aniadirParticipacion(p);
-    	}
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Participación añadida con éxito");
-    		Cancelar(event);
-    	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al añadir participación");
-    	}
+    	try {
+    		int nId = oDao.generarId("Participacion");
+        	Deportista d = cbDeportista.getSelectionModel().getSelectedItem();
+        	Equipo eq = cbEquipo.getSelectionModel().getSelectedItem();
+        	Evento ev = cbEvento.getSelectionModel().getSelectedItem();
+        	Integer nEdad = Integer.parseInt(tfEdad.getText());
+        	String sMedalla = cbMedalla.getSelectionModel().getSelectedItem();
+        	
+        	Participacion p = new Participacion(d, ev, eq, nEdad, sMedalla);
+        	boolean resultado;
+        	if (modificar) {
+        		resultado = oDao.modificarParticipacion(p);
+        		if (resultado) {
+            		TablaGeneralController.ventanaAlerta("I", "Participación modificada con éxito");
+            		Cancelar(event);
+            	}else {
+            		TablaGeneralController.ventanaAlerta("E", "Error al modificar participación");
+            	}
+        	}else {
+        		resultado = oDao.aniadirParticipacion(p);
+        		if (resultado) {
+            		TablaGeneralController.ventanaAlerta("I", "Participación añadida con éxito");
+            		Cancelar(event);
+            	}else {
+            		TablaGeneralController.ventanaAlerta("E", "Error al añadir participación");
+            	}
+        	}	
+    	}catch(NumberFormatException e) {
+    		TablaGeneralController.ventanaAlerta("E", "Inserte un valor entero positivo en edad");
+    	}	
     }
 
     /**
@@ -122,7 +130,5 @@ public class AniadirParticipacionController implements Initializable{
 		
 		cbDeportista.setDisable(true);
 		cbEvento.setDisable(true);
-		
-		
 	}
 }

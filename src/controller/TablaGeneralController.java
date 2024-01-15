@@ -160,6 +160,8 @@ public class TablaGeneralController implements Initializable{
     @FXML
     void aniadirParticipacion(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirParticipacion", "AÑADIR PARTICIPACION", 500, 450);
+    	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+		cargarTabla(participaciones);
     }
 
     /**
@@ -184,6 +186,8 @@ public class TablaGeneralController implements Initializable{
     		pModificar = tvTabla.getSelectionModel().getSelectedItem();    		
     		ventanaSecundaria("VentanaAñadirParticipacion", "MODIFICAR PARTICIPACION", 500, 450);
     		pModificar=null;
+    		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+    		cargarTabla(participaciones);    		
     }
     
     @FXML
