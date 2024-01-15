@@ -177,9 +177,15 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     void modificar(ActionEvent event) {
-    		pModificar = tvTabla.getSelectionModel().getSelectedItem();
+    		pModificar = tvTabla.getSelectionModel().getSelectedItem();    		
     		aniadirParticipacion(event);
     }
+    
+    @FXML
+    void eliminar(ActionEvent event) {
+    		
+    }
+    
     /**
      * Cuando se inicia la ventana, añade todos los registros de la tabla Participacion de la bbdd en la tabla de la ventana y 
      * rellena el choicebox para seleccionar el campo que queremos filtrar.

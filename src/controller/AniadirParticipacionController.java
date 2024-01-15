@@ -68,38 +68,30 @@ public class AniadirParticipacionController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ObservableList<Deportista> listaDeportistas = oDao.cargarDeportista();
-		ObservableList<Equipo> listaEquipo = oDao.cargarEquipo();
-		ObservableList<Evento> listaEvento = oDao.cargarEvento();
+		ObservableList<Equipo> listaEquipos = oDao.cargarEquipo();
+		ObservableList<Evento> listaEventos = oDao.cargarEvento();
 		
 		cbDeportista.getItems().addAll(listaDeportistas);
-		cbEquipo.getItems().addAll(listaEquipo);
-		cbEvento.getItems().addAll(listaEvento);
+		cbEquipo.getItems().addAll(listaEquipos);
+		cbEvento.getItems().addAll(listaEventos);
 		cbMedalla.getItems().addAll(medallas);
 		
 		Participacion p = TablaGeneralController.pModificar;
 		if (p.getIdDeportista()!=0) {
-			Deportista d;
-			Evento ev;
-			Equipo eq;
+			ObservableList<Deportista>listaDeportista = oDao.filtrarDeportista("id_deportista", p.getIdDeportista()+"");
+			ObservableList<Evento>listaEvento = oDao.filtrarEvento("id_evento", p.getIdEvento()+"");
+			ObservableList<Equipo>listaEquipo = oDao.filtrarEquipo("id_equipo", p.getIdEquipo()+"");
+			System.out.println(listaEquipo.get(0).getIdEquipo());
+						
+			Deportista d = listaDeportista.get(0);
+			Evento ev = listaEvento.get(0);
+			Equipo eq= listaEquipo.get(0);
 			
-			Iterator<Deportista> itDep = listaDeportistas.iterator();
-			Iterator<Evento> itEv = listaEvento.iterator();
-			
-			
-			while (itDep.hasNext()) {
-				Deportista dep = itDep.next();
-				if (p.getIdDeportista()==dep.getIdDeportista()) {
-					d = dep;
-				}
-			}
-			while (itEv.hasNext()) {
-				Evento even = itEv.next();
-				if (p.getIdEvento()==even.getIdEvento()) {
-					ev = even;
-				}
-			}
-			while ()
-			
+			cbDeportista.getSelectionModel().select(d);
+			cbEvento.getSelectionModel().select(ev);
+			cbEquipo.getSelectionModel().select(eq);
+			tfEdad.setText(p.getEdad().toString());
+			cbMedalla.getSelectionModel().select(p.getMedalla());
 		}
 	}
 }

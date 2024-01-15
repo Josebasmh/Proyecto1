@@ -435,6 +435,12 @@ public class OlimpiadasDao {
 		return listaEquipo;
 	}
 
+	public ObservableList<Equipo> filtrarEquipo(String campoSeleccionado, String txFiltro) {
+		ObservableList<Equipo> listaEquipo = FXCollections.observableArrayList();		
+		String consultaModificada = consultaEquipo + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaEquipo = crearListaEquipo(consultaModificada);
+		return listaEquipo;
+	}
 	
 	private ObservableList<Equipo> crearListaEquipo(String consulta) {
 		ObservableList<Equipo> listaDeporte= FXCollections.observableArrayList();
