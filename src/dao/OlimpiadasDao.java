@@ -514,6 +514,14 @@ public class OlimpiadasDao {
 		return listaEquipo;
 	}
 	
+	public boolean modificarEquipo(Equipo e) {
+		String consulta = "UPDATE Equipo SET"+
+				" nombre='"+e.getNombre()+
+				"',iniciales='"+e.getIniciales()+
+				"' WHERE id_equipo="+e.getIdEquipo()+";";		
+		return ejecutarConsulta(consulta);		
+	}
+	
 	/**
 	 * Crea una lista de equipos con la consulta pasada como parametro. 
 	 * @param consulta

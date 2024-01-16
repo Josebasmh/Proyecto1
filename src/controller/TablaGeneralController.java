@@ -25,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Equipo;
 import model.Participacion;
 
 public class TablaGeneralController implements Initializable{
@@ -90,6 +91,7 @@ public class TablaGeneralController implements Initializable{
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Deportista","Evento","Olimpiada","Deporte","Equipo","Abreviatura","Edad","Medalla"};
     static Participacion pModificar;
+    static Equipo gEquipoModificar;
 
     /**
      * Método para iniciar la tabla Deportista
@@ -198,7 +200,9 @@ public class TablaGeneralController implements Initializable{
     
     @FXML
     void modificarEquipo(ActionEvent event) {
-
+    	gEquipoModificar = oDao.filtrarEquipo("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomEquipo()).get(0);    	
+		ventanaSecundaria("VentanaAñadirEquipo", "MODIFICAR EQUIPO", 380, 460);
+		gEquipoModificar =null;  
     }
     
     @FXML
