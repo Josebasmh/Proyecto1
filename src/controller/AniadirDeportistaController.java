@@ -109,7 +109,6 @@ public class AniadirDeportistaController implements Initializable{
 		
 		try {
 			d = DeportistaController.gDepModificar;
-			System.out.println(d.getIdDeportista()+","+d.getNombre());
 			modificar = true;
 			mostrarDatosModificar(d);
 		}catch(Exception e) {}

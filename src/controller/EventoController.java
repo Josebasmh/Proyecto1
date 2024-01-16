@@ -24,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Deportista;
 import model.Evento;
 
 public class EventoController implements Initializable{
@@ -61,6 +62,7 @@ public class EventoController implements Initializable{
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Nombre","Olimpiada","Deporte"};
+    static Evento gEveModificar;
 
     @FXML
     void aniadirDeporte(ActionEvent event) {
@@ -110,9 +112,18 @@ public class EventoController implements Initializable{
     	cargarTabla(listaFiltrada);
     }
     
+    /**
+     * Obtiene el evento de la tabla seleccionado y lo pasa a la ventana hija. Actualiza la tabla y reinicia
+     * el evento.
+     * @param event
+     */
     @FXML
     void modificar(ActionEvent event) {
-
+    	gEveModificar = tvTabla.getSelectionModel().getSelectedItem();
+    	ventanaSecundaria("VentanaAñadirEvento", "MODIFICAR EVENTO", 380, 460);
+		ObservableList<Evento>listaEventos= oDao.cargarEvento();
+		tvTabla.setItems(listaEventos);
+		gEveModificar=null;
     }
     
     @FXML

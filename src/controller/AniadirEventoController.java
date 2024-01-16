@@ -29,28 +29,49 @@ public class AniadirEventoController implements Initializable{
     @FXML
     private TextField tfNombre;
     
-    OlimpiadasDao oDao = new OlimpiadasDao();
+    private OlimpiadasDao oDao = new OlimpiadasDao();
+    private Evento eve;
+    private boolean modificar;
     
     
     /**
-     * Genera un Evento y lo añade a la BBDD.
+     * Genera un Evento y lo añade/modifica a la BBDD.
      * @param event
      */
     @FXML
     void Aceptar(ActionEvent event) {
-
-    	int nId = oDao.generarId("Evento");
-    	String sNombre = tfNombre.getText();
-    	Olimpiada o = cbOlimpiada.getSelectionModel().getSelectedItem();
-    	Deporte d = cbDeporte.getSelectionModel().getSelectedItem();
-    	Evento e = new Evento(nId, o.getIdOlimpiada(), d.getIdDeporte(), sNombre, o.getNombre(), d.getNombre());
-    	boolean resultado = oDao.aniadirEvento(e);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Deportista añadido con éxito");
-    		Cancelar(event);
-    	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deportista");
-    	}
+    	try {
+    		
+        	String sNombre = tfNombre.getText();
+        	Olimpiada o = cbOlimpiada.getSelectionModel().getSelectedItem();
+        	Deporte d = cbDeporte.getSelectionModel().getSelectedItem();
+        	
+        	if (modificar) {
+        		
+        		Evento e = new Evento(eve.getIdEvento(), o.getIdOlimpiada(), d.getIdDeporte(), sNombre, o.getNombre(), d.getNombre());
+        		boolean resultado = oDao.modificarEvento(e);
+        		if (resultado) {
+        			TablaGeneralController.ventanaAlerta("I", "Deportista modificado con éxito");
+            		Cancelar(event);
+        		}else {
+        			TablaGeneralController.ventanaAlerta("E", "Error al modificar Deportista");
+        		}
+        				
+        	}else{
+        		
+        		int nId = oDao.generarId("Evento");
+        		Evento e = new Evento(nId, o.getIdOlimpiada(), d.getIdDeporte(), sNombre, o.getNombre(), d.getNombre());
+            	boolean resultado = oDao.aniadirEvento(e);
+        		if (resultado) {
+            		TablaGeneralController.ventanaAlerta("I", "Deportista añadido con éxito");
+            		Cancelar(event);
+            	}else {
+            		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deportista");
+            	}
+        	}
+    	}catch (Exception e) {
+			
+		}
     }
 
     /**
@@ -65,10 +86,13 @@ public class AniadirEventoController implements Initializable{
     }
 
     /**
-     * al iniciar la ventana carga las olimpiadas y deportes para añadir a los ChoiceBox.
+     * Al iniciar la ventana carga las olimpiadas y deportes para añadir a los ChoiceBox. 
+     * Comprueba si la orden es añadir o modificar; si es la última, muestra los datos del evento
+     * en la ventana.
      */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		modificar = false;
 		ObservableList<Olimpiada> listaOlimpiada= oDao.cargarOlimpiada();
 		Iterator<Olimpiada> itO = listaOlimpiada.iterator();
 		while (itO.hasNext()) {
@@ -81,6 +105,28 @@ public class AniadirEventoController implements Initializable{
 			Deporte d = itD.next();
 			cbDeporte.getItems().add(d);
 		}
+		
+		try {
+			eve = EventoController.gEveModificar;
+			modificar = true;
+			mostrarDatosModificar(eve);
+		}catch(Exception e) {}
+	}
+
+	/**
+	 * Muestra el evento en la ventana.
+	 * @param eve
+	 */
+	private void mostrarDatosModificar(Evento eve) {
+		ObservableList<Deporte> listaDeporte = oDao.filtrarDeporte("id_deporte", eve.getIdDeporte().toString());
+		ObservableList<Olimpiada> listaOlimpiada = oDao.filtrarOlimpiada("id_olimpiada", eve.getIdOlimpiada().toString());
+		
+		Deporte d = listaDeporte.get(0);
+		Olimpiada o = listaOlimpiada.get(0);
+		
+		tfNombre.setText(eve.getNomEvento());
+		cbDeporte.getSelectionModel().select(d);
+		cbOlimpiada.getSelectionModel().select(o);
 	}
 
 }
