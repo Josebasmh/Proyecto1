@@ -74,6 +74,7 @@ public class OlimpiadasDao {
 			conexion.CloseConexion();
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 		
@@ -364,6 +365,19 @@ public class OlimpiadasDao {
 	 */
 	public boolean aniadirOlimpiada(Olimpiada o) {
 		String consulta = "INSERT INTO Olimpiada VALUES ("+o.getIdOlimpiada()+",'"+o.getNombre()+"',"+o.getAnio()+",'"+o.getTemporada()+"','"+o.getCiudad()+"');";
+		return ejecutarConsulta(consulta);
+	}
+	
+
+	
+	public boolean modificarOlimpiada(Olimpiada o) {
+		
+		String consulta = "UPDATE Olimpiada SET"+
+				" nombre='"+o.getNombre()+
+				"',anio="+o.getAnio()+
+				",temporada='"+o.getTemporada()+
+				"',ciudad='"+o.getCiudad()+
+				"' WHERE id_olimpiada="+o.getIdOlimpiada()+";";		
 		return ejecutarConsulta(consulta);
 	}
 	

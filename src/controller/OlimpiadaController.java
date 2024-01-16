@@ -24,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Evento;
 import model.Olimpiada;
 
 public class OlimpiadaController implements Initializable{
@@ -66,6 +67,7 @@ public class OlimpiadaController implements Initializable{
     
     OlimpiadasDao oDao = new OlimpiadasDao();
     String[] campos = {"Nombre","Año","Temporada","Ciudad"};
+    static Olimpiada gOliModificar;
 
     /**
      * Abre la ventana para añadir una olimpiada.
@@ -91,7 +93,11 @@ public class OlimpiadaController implements Initializable{
 
     @FXML
     void modificar(ActionEvent event) {
-    	
+    	gOliModificar = tvTabla.getSelectionModel().getSelectedItem();
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "MODIFICAR OLIMPIADA", 380, 460);
+		ObservableList<Olimpiada>listaOlimpiadas= oDao.cargarOlimpiada();
+		tvTabla.setItems(listaOlimpiadas);
+		gOliModificar=null;
     }
 
     @FXML

@@ -109,15 +109,14 @@ public class AniadirEventoController implements Initializable{
 		try {
 			eve = EventoController.gEveModificar;
 			modificar = true;
-			mostrarDatosModificar(eve);
+			mostrarDatosModificar();
 		}catch(Exception e) {}
 	}
 
 	/**
 	 * Muestra el evento en la ventana.
-	 * @param eve
 	 */
-	private void mostrarDatosModificar(Evento eve) {
+	private void mostrarDatosModificar() {
 		ObservableList<Deporte> listaDeporte = oDao.filtrarDeporte("id_deporte", eve.getIdDeporte().toString());
 		ObservableList<Olimpiada> listaOlimpiada = oDao.filtrarOlimpiada("id_olimpiada", eve.getIdOlimpiada().toString());
 		
