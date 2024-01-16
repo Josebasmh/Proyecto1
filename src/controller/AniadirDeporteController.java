@@ -17,19 +17,34 @@ public class AniadirDeporteController implements Initializable{
     @FXML
     private TextField tfNombre;
     
-    OlimpiadasDao oDao;
+    private OlimpiadasDao oDao;
+    private Deporte d;
+    private boolean modificar;
 
     @FXML
     void Aceptar(ActionEvent event) {
+    	
     	int nId = oDao.generarId("Deportista");
     	String sNombre = tfNombre.getText();
-    	Deporte d = new Deporte(nId, sNombre);
-    	boolean resultado = oDao.aniadirDeporte(d);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Deporte añadido con éxito");
-    		Cancelar(event);
+    	
+    	if (modificar) {
+    		Deporte dMod = new Deporte(d.getIdDeporte(), sNombre);
+    		boolean resultado = oDao.modificarDeporte(dMod);
+        	if (resultado) {
+        		TablaGeneralController.ventanaAlerta("I", "Deporte modificado con éxito");
+        		Cancelar(event);
+        	}else {
+        		TablaGeneralController.ventanaAlerta("E", "Error al modificar Deporte");
+        	}
     	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deporte");
+    		Deporte d = new Deporte(nId, sNombre);
+        	boolean resultado = oDao.aniadirDeporte(d);
+        	if (resultado) {
+        		TablaGeneralController.ventanaAlerta("I", "Deporte añadido con éxito");
+        		Cancelar(event);
+        	}else {
+        		TablaGeneralController.ventanaAlerta("E", "Error al añadir Deporte");
+        	}	
     	}
     }
 
@@ -44,6 +59,16 @@ public class AniadirDeporteController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		oDao = new OlimpiadasDao();
 		
+		try {
+			d = EventoController.gDepModificar;
+			modificar = true;
+			mostrarDatosModificar();
+		}catch(Exception e) {}
+		
+	}
+
+	private void mostrarDatosModificar() {
+		tfNombre.setText(d.getNombre());
 	}
 
 }

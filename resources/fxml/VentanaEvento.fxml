@@ -58,6 +58,8 @@
                <items>
                   <MenuItem fx:id="miModificar" mnemonicParsing="false" onAction="#modificar" text="Modificar" />
                   <MenuItem fx:id="miEliminar" mnemonicParsing="false" onAction="#eliminar" text="Eliminar" />
+				  <MenuItem fx:id="miModificarDeporte" mnemonicParsing="false" onAction="#modificarDeporte" text="Modificar Deporte" />
+                  <MenuItem fx:id="miEliminarDeporte" mnemonicParsing="false" onAction="#eliminarDeporte" text="Eliminar Deporte" />
                </items>
             </ContextMenu>
          </contextMenu>

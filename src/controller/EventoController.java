@@ -24,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Deporte;
 import model.Deportista;
 import model.Evento;
 
@@ -63,6 +64,7 @@ public class EventoController implements Initializable{
     OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Nombre","Olimpiada","Deporte"};
     static Evento gEveModificar;
+    static Deporte gDepModificar;
 
     @FXML
     void aniadirDeporte(ActionEvent event) {
@@ -124,10 +126,26 @@ public class EventoController implements Initializable{
 		ObservableList<Evento>listaEventos= oDao.cargarEvento();
 		tvTabla.setItems(listaEventos);
 		gEveModificar=null;
+		ObservableList<Evento>eventos = oDao.cargarEvento();
+		cargarTabla(eventos);
     }
     
     @FXML
+    void modificarDeporte(ActionEvent event) {
+    	gDepModificar = oDao.filtrarDeporte("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomDeporte()).get(0);
+    	ventanaSecundaria("VentanaAñadirDeporte", "MODIFICAR DEPORTE", 450, 190);
+		gDepModificar=null;
+		ObservableList<Evento>eventos = oDao.cargarEvento();
+		cargarTabla(eventos);
+		
+    }
+    @FXML
     void eliminar(ActionEvent event) {
+    	
+    }
+    
+    @FXML
+    void eliminarDeporte(ActionEvent event) {
 
     }
 

@@ -72,7 +72,7 @@ public class OlimpiadasDao {
 	 * @return
 	 */
 	private boolean ejecutarConsulta(String consulta) {
-		try {
+		try {			
 			conexion = new ConexionBD();
 			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
 			int i = ps.executeUpdate(consulta);
@@ -384,7 +384,6 @@ public class OlimpiadasDao {
 	 * @return true(modificado con éxito) / false(error al modificar).
 	 */
 	public boolean modificarOlimpiada(Olimpiada o) {
-		
 		String consulta = "UPDATE Olimpiada SET"+
 				" nombre='"+o.getNombre()+
 				"',anio="+o.getAnio()+
@@ -454,6 +453,13 @@ public class OlimpiadasDao {
 		String consultaModificada = consultaDeporte+ " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
 		listaDeporte = crearListaDeporte(consultaModificada);
 		return listaDeporte;
+	}
+
+	public boolean modificarDeporte(Deporte d) {
+		String consulta = "UPDATE Deporte SET"+
+				" nombre='"+d.getNombre()+
+				"' WHERE id_deporte="+d.getIdDeporte()+";";		
+		return ejecutarConsulta(consulta);
 	}
 	
 	/**
