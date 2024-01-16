@@ -534,6 +534,13 @@ public class OlimpiadasDao {
 				"' WHERE id_equipo="+e.getIdEquipo()+";";		
 		return ejecutarConsulta(consulta);		
 	}
+
+	public boolean eliminarEquipo(Equipo eq) {
+		String consulta = "DELETE FROM Equipo" + 
+				" WHERE id_deportista="+eq.getIdEquipo()+";";
+		
+		return ejecutarConsulta(consulta);
+	}
 	
 	/**
 	 * Crea una lista de equipos con la consulta pasada como parametro. 

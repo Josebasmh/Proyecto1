@@ -210,9 +210,9 @@ public class TablaGeneralController implements Initializable{
     	
     	boolean resultado = oDao.eliminarParticipacion(tvTabla.getSelectionModel().getSelectedItem());
     	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Participación modificada con éxito");
+    		TablaGeneralController.ventanaAlerta("I", "Participación eliminada con éxito");
     	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al modificar participación");
+    		TablaGeneralController.ventanaAlerta("E", "Error al eliminar participación");
     	}
     	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
     	tvTabla.setItems(participaciones);
@@ -220,7 +220,16 @@ public class TablaGeneralController implements Initializable{
     
     @FXML
     void eliminarEquipo(ActionEvent event) {
-
+    	gEquipoModificar = oDao.filtrarEquipo("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomEquipo()).get(0);
+    	boolean resultado = oDao.eliminarEquipo(gEquipoModificar);
+    	if (resultado) {
+    		TablaGeneralController.ventanaAlerta("I", "Equipo eliminado con éxito");
+    	}else {
+    		TablaGeneralController.ventanaAlerta("E", "Error al eliminar equipo");
+    	}
+    	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+    	tvTabla.setItems(participaciones);
+    	gEquipoModificar =null;
     }
     
     /**
