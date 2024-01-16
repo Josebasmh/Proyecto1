@@ -12,7 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -22,18 +24,26 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Deporte;
+import model.Deportista;
 import model.Evento;
 
 public class EventoController implements Initializable{
 
     @FXML
     private ChoiceBox<String> cbBusqueda;
-
+    
     @FXML
-    private Menu mAyuda;
+    private ContextMenu cmTabla;
 
     @FXML
     private Menu mAñadir;
+    
+    @FXML
+    private MenuItem miEliminar;
+
+    @FXML
+    private MenuItem miModificar;
 
     @FXML
     private TableColumn<Evento, String> tcDeporte;
@@ -53,6 +63,8 @@ public class EventoController implements Initializable{
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Nombre","Olimpiada","Deporte"};
+    static Evento gEveModificar;
+    static Deporte gDepModificar;
 
     @FXML
     void aniadirDeporte(ActionEvent event) {
@@ -100,6 +112,41 @@ public class EventoController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Evento>listaFiltrada = oDao.filtrarEvento(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
+    }
+    
+    /**
+     * Obtiene el evento de la tabla seleccionado y lo pasa a la ventana hija. Actualiza la tabla y reinicia
+     * el evento.
+     * @param event
+     */
+    @FXML
+    void modificar(ActionEvent event) {
+    	gEveModificar = tvTabla.getSelectionModel().getSelectedItem();
+    	ventanaSecundaria("VentanaAñadirEvento", "MODIFICAR EVENTO", 380, 460);
+		ObservableList<Evento>listaEventos= oDao.cargarEvento();
+		tvTabla.setItems(listaEventos);
+		gEveModificar=null;
+		ObservableList<Evento>eventos = oDao.cargarEvento();
+		cargarTabla(eventos);
+    }
+    
+    @FXML
+    void modificarDeporte(ActionEvent event) {
+    	gDepModificar = oDao.filtrarDeporte("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomDeporte()).get(0);
+    	ventanaSecundaria("VentanaAñadirDeporte", "MODIFICAR DEPORTE", 450, 190);
+		gDepModificar=null;
+		ObservableList<Evento>eventos = oDao.cargarEvento();
+		cargarTabla(eventos);
+		
+    }
+    @FXML
+    void eliminar(ActionEvent event) {
+    	
+    }
+    
+    @FXML
+    void eliminarDeporte(ActionEvent event) {
+
     }
 
     /**

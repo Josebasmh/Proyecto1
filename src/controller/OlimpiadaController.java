@@ -12,7 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,12 +31,21 @@ public class OlimpiadaController implements Initializable{
 
     @FXML
     private ChoiceBox<String> cbBusqueda;
+    
+    @FXML
+    private ContextMenu cmTabla;
 
     @FXML
     private Menu mAyuda;
 
     @FXML
     private Menu mAñadir;
+    
+    @FXML
+    private MenuItem miEliminar;
+
+    @FXML
+    private MenuItem miModificar;
 
     @FXML
     private TableColumn<Olimpiada, Integer> tcAnio;
@@ -56,6 +67,7 @@ public class OlimpiadaController implements Initializable{
     
     OlimpiadasDao oDao = new OlimpiadasDao();
     String[] campos = {"Nombre","Año","Temporada","Ciudad"};
+    static Olimpiada gOliModificar;
 
     /**
      * Abre la ventana para añadir una olimpiada.
@@ -76,6 +88,21 @@ public class OlimpiadaController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();
     	ObservableList<Olimpiada>listaFiltrada = oDao.filtrarOlimpiada(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
+    }
+    
+
+    @FXML
+    void modificar(ActionEvent event) {
+    	gOliModificar = tvTabla.getSelectionModel().getSelectedItem();
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "MODIFICAR OLIMPIADA", 380, 460);
+		ObservableList<Olimpiada>listaOlimpiadas= oDao.cargarOlimpiada();
+		tvTabla.setItems(listaOlimpiadas);
+		gOliModificar=null;
+    }
+
+    @FXML
+    void eliminar(ActionEvent event) {
+    	
     }
     
     /**

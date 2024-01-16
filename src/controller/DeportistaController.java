@@ -12,7 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,9 +31,19 @@ public class DeportistaController implements Initializable{
 
     @FXML
     private ChoiceBox<String> cbBusqueda;
+    
+
+    @FXML
+    private ContextMenu cmTabla;
 
     @FXML
     private Menu mAñadir;
+
+    @FXML
+    private MenuItem miEliminar;
+
+    @FXML
+    private MenuItem miModificar;
 
     @FXML
     private TableColumn<Deportista, Integer> tcAltura;
@@ -57,6 +69,7 @@ public class DeportistaController implements Initializable{
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Nombre","Sexo","Peso","Altura"};
+    static Deportista gDepModificar;
 
     /**
      * Abre la ventana para añadir Deportistas
@@ -78,6 +91,24 @@ public class DeportistaController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Deportista>listaFiltrada = oDao.filtrarDeportista(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
+    }
+	
+    /**
+     * Modifica el registro seleccionado en la tabla.
+     * @param event
+     */
+    @FXML
+    void modificar(ActionEvent event) {
+    	gDepModificar = tvTabla.getSelectionModel().getSelectedItem();
+    	ventanaSecundaria("VentanaAñadirDeportista", "MODIFICAR DEPORTISTA", 450, 500);
+		ObservableList<Deportista>listaDeportistas= oDao.cargarDeportista();
+		tvTabla.setItems(listaDeportistas);
+		gDepModificar=null;
+    }
+
+	@FXML
+    void eliminar(ActionEvent event) {
+
     }
 
     /**

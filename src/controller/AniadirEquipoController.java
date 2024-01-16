@@ -21,7 +21,9 @@ public class AniadirEquipoController implements Initializable{
     @FXML
     private TextField tfNombre;
     
-    OlimpiadasDao oDao;
+    private OlimpiadasDao oDao;
+    private Equipo eq;
+    private boolean modificar;
 
     /**
      * Al pulsar el botón genera un Equipo y lo añade a la BBDD.
@@ -33,13 +35,24 @@ public class AniadirEquipoController implements Initializable{
     	String sNombre = tfNombre.getText();
     	String sIniciales = tfIniciales.getText();
     	
-    	Equipo e = new Equipo(nId, sNombre, sIniciales);
-    	boolean resultado = oDao.aniadirEquipo(e);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Equipo añadido con éxito");
-    		Cancelar(event);
+    	if (modificar) {
+    		Equipo e = new Equipo(eq.getIdEquipo(), sNombre, sIniciales);
+    		boolean resultado = oDao.modificarEquipo(e);
+        	if (resultado) {
+        		TablaGeneralController.ventanaAlerta("I", "Equipo modificado con éxito");
+        		Cancelar(event);
+        	}else {
+        		TablaGeneralController.ventanaAlerta("E", "Error al modificar Equipo");
+        	}
     	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al añadir Equipo");
+    		Equipo e = new Equipo(nId, sNombre, sIniciales);
+        	boolean resultado = oDao.aniadirEquipo(e);
+        	if (resultado) {
+        		TablaGeneralController.ventanaAlerta("I", "Equipo añadido con éxito");
+        		Cancelar(event);
+        	}else {
+        		TablaGeneralController.ventanaAlerta("E", "Error al añadir Equipo");
+        	}	
     	}
     }
 
@@ -57,7 +70,18 @@ public class AniadirEquipoController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		oDao = new OlimpiadasDao();
+		modificar = false;
 		
+		try {
+			eq = TablaGeneralController.gEquipoModificar;
+			modificar = true;
+			mostrarDatosModificar();
+		}catch(Exception e) {}
+	}
+
+	private void mostrarDatosModificar() {
+		tfNombre.setText(eq.getNombre());
+		tfIniciales.setText(eq.getIniciales());		
 	}
 
 }

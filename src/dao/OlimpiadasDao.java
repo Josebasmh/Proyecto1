@@ -66,6 +66,25 @@ public class OlimpiadasDao {
 		return nId;
 	}
 	
+	/**
+	 * Ejecuta la consulta pasada como parámetro.
+	 * @param consulta
+	 * @return
+	 */
+	private boolean ejecutarConsulta(String consulta) {
+		try {			
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			int i = ps.executeUpdate(consulta);
+			conexion.CloseConexion();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 	// PARTICIPACION \\
 	/**
 	 * Carga todos los registros de la tabla Participacion.
@@ -119,15 +138,24 @@ public class OlimpiadasDao {
 	 */
 	public boolean aniadirParticipacion(Participacion p) {
 		String consulta = "INSERT INTO Participacion VALUES ("+p.getIdDeportista()+",'"+p.getIdEvento()+"','"+p.getIdEquipo()+"',"+p.getEdad()+",'"+p.getMedalla()+"');";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);
-			conexion.CloseConexion();
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
+		return ejecutarConsulta(consulta);
+	}
+	
+	/**
+	 * Cambia el registro por los datos pasados como parámetro. 
+	 * @param p Participacion
+	 * @return true(modificado con éxito) / false(error al modificar).
+	 */
+	public boolean modificarParticipacion(Participacion p) {
+		String consulta = "UPDATE Participacion SET id_deportista="+p.getIdDeportista()+
+				",id_evento="+p.getIdEvento()+
+				",id_equipo="+p.getIdEquipo()+
+				",edad="+p.getEdad()+
+				",medalla='"+p.getMedalla()+"'"+
+				" WHERE id_deportista="+p.getIdDeportista()+
+				" AND id_evento="+p.getIdEvento();
+		
+		return ejecutarConsulta(consulta);
 	}
 	
 	/**
@@ -158,7 +186,7 @@ public class OlimpiadasDao {
 			}
 			conexion.CloseConexion();
 		}catch(SQLException e) {
-			
+			e.printStackTrace();
 		}		
 		return listaParticipacion;
 	}
@@ -196,15 +224,21 @@ public class OlimpiadasDao {
 	 */
 	public boolean aniadirDeportista(Deportista d) {
 		String consulta = "INSERT INTO Deportista VALUES ("+d.getIdDeportista()+",'"+d.getNombre()+"','"+d.getSexo()+"',"+d.getPeso()+","+d.getAltura()+");";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);
-			conexion.CloseConexion();
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
+		return ejecutarConsulta(consulta);
+	}
+	
+	/**
+	 * Cambia el Deportista de la BBDD por el pasado por parámetro. 
+	 * @param d
+	 * @return true(modificado con éxito) / false(error al modificar).
+	 */
+	public boolean modificarDeportista(Deportista d) {
+		String consulta = "UPDATE Deportista SET nombre='"+d.getNombre()+
+				"',sexo='"+d.getSexo()+"'"+
+				",peso="+d.getPeso()+
+				",altura="+d.getAltura()+
+				" WHERE id_deportista="+d.getIdDeportista()+";";
+		return ejecutarConsulta(consulta);
 	}
 	
 	/**
@@ -264,17 +298,23 @@ public class OlimpiadasDao {
 	 */
 	public boolean aniadirEvento(Evento ev) {
 		String consulta = "INSERT INTO Evento VALUES ("+ev.getIdEvento()+",'"+ev.getNomEvento()+"','"+ev.getIdOlimpiada()+"',"+ev.getIdDeporte()+");";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);			
-			conexion.CloseConexion();
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
+		return ejecutarConsulta(consulta);
 	}
 	
+	/**
+	 * Cambia el Evento de la BBDD por el pasado por parámetro. 
+	 * @param e
+	 * @return true(modificado con éxito) / false(error al modificar).
+	 */
+	public boolean modificarEvento(Evento e) {
+		String consulta = "UPDATE Evento SET"+
+				" nombre='"+e.getNomEvento()+
+				"',id_olimpiada="+e.getIdOlimpiada()+
+				",id_deporte="+e.getIdDeporte()+				
+				" WHERE id_evento="+e.getIdEvento()+";";
+		return ejecutarConsulta(consulta);		
+	}
+
 	/**
 	 *Crea una lista de eventos con la consulta pasada como parametro. 
 	 * @param consulta
@@ -335,16 +375,22 @@ public class OlimpiadasDao {
 	 */
 	public boolean aniadirOlimpiada(Olimpiada o) {
 		String consulta = "INSERT INTO Olimpiada VALUES ("+o.getIdOlimpiada()+",'"+o.getNombre()+"',"+o.getAnio()+",'"+o.getTemporada()+"','"+o.getCiudad()+"');";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);			
-			conexion.CloseConexion();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return ejecutarConsulta(consulta);
+	}
+	
+	/**
+	 * Cambia la Olimpiada de la BBDD por el pasado por parámetro. 
+	 * @param o
+	 * @return true(modificado con éxito) / false(error al modificar).
+	 */
+	public boolean modificarOlimpiada(Olimpiada o) {
+		String consulta = "UPDATE Olimpiada SET"+
+				" nombre='"+o.getNombre()+
+				"',anio="+o.getAnio()+
+				",temporada='"+o.getTemporada()+
+				"',ciudad='"+o.getCiudad()+
+				"' WHERE id_olimpiada="+o.getIdOlimpiada()+";";		
+		return ejecutarConsulta(consulta);
 	}
 	
 	/**
@@ -387,6 +433,36 @@ public class OlimpiadasDao {
 	}
 
 	/**
+	 * Añade a la BBDD el deporte del parámetro.
+	 * @param d Deporte
+	 * @return true(añadido con éxito) / false(error al añadir).
+	 */
+	public boolean aniadirDeporte(Deporte d) {
+		String consulta = "INSERT INTO Deporte VALUES ("+d.getIdDeporte()+",'"+d.getNombre()+"');";
+		return ejecutarConsulta(consulta);
+	}
+	
+	/**
+	 * Filtra los datos de deporte dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
+	 * @param campoSeleccionado
+	 * @param txFiltro
+	 * @return
+	 */
+	public ObservableList<Deporte> filtrarDeporte(String campoSeleccionado, String txFiltro) {
+		ObservableList<Deporte> listaDeporte = FXCollections.observableArrayList();
+		String consultaModificada = consultaDeporte+ " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaDeporte = crearListaDeporte(consultaModificada);
+		return listaDeporte;
+	}
+
+	public boolean modificarDeporte(Deporte d) {
+		String consulta = "UPDATE Deporte SET"+
+				" nombre='"+d.getNombre()+
+				"' WHERE id_deporte="+d.getIdDeporte()+";";		
+		return ejecutarConsulta(consulta);
+	}
+	
+	/**
 	 * Crea una lista de deportes con la consulta pasada como parametro. 
 	 * @param consulta
 	 * @return lista de deportes.
@@ -417,17 +493,13 @@ public class OlimpiadasDao {
 	 */
 	public boolean aniadirEquipo(Equipo eq) {
 		String consulta = "INSERT INTO Equipo VALUES ("+eq.getIdEquipo()+",'"+eq.getNombre()+"','"+eq.getIniciales()+"');";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);			
-			conexion.CloseConexion();
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
+		return ejecutarConsulta(consulta);
 	}
 	
+	/**
+	 * Carga todos los registros de la tabla equipo.
+	 * @return lista de equipos.
+	 */
 	public ObservableList<Equipo> cargarEquipo() {
 		ObservableList<Equipo> listaEquipo= FXCollections.observableArrayList();
 		String consultaModificada = consultaEquipo+ ";";
@@ -435,7 +507,32 @@ public class OlimpiadasDao {
 		return listaEquipo;
 	}
 
+	/**
+	 * Filtra los datos de equipo dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
+	 * @param campoSeleccionado
+	 * @param txFiltro
+	 * @return
+	 */
+	public ObservableList<Equipo> filtrarEquipo(String campoSeleccionado, String txFiltro) {
+		ObservableList<Equipo> listaEquipo = FXCollections.observableArrayList();		
+		String consultaModificada = consultaEquipo + " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
+		listaEquipo = crearListaEquipo(consultaModificada);
+		return listaEquipo;
+	}
 	
+	public boolean modificarEquipo(Equipo e) {
+		String consulta = "UPDATE Equipo SET"+
+				" nombre='"+e.getNombre()+
+				"',iniciales='"+e.getIniciales()+
+				"' WHERE id_equipo="+e.getIdEquipo()+";";		
+		return ejecutarConsulta(consulta);		
+	}
+	
+	/**
+	 * Crea una lista de equipos con la consulta pasada como parametro. 
+	 * @param consulta
+	 * @return lista de equipos.
+	 */
 	private ObservableList<Equipo> crearListaEquipo(String consulta) {
 		ObservableList<Equipo> listaDeporte= FXCollections.observableArrayList();
 		try {
@@ -452,25 +549,5 @@ public class OlimpiadasDao {
 			conexion.CloseConexion();
 		}catch(SQLException e) {}		
 		return listaDeporte;
-	}
-
-	// DEPORTE \\
-
-	/**
-	 * Añade a la BBDD el deporte del parámetro.
-	 * @param d Deporte
-	 * @return true(añadido con éxito) / false(error al añadir).
-	 */
-	public boolean aniadirDeporte(Deporte d) {
-		String consulta = "INSERT INTO Deporte VALUES ("+d.getIdDeporte()+",'"+d.getNombre()+"');";
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			int i = ps.executeUpdate(consulta);			
-			conexion.CloseConexion();
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
 	}
 }

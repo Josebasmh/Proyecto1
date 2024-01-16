@@ -24,28 +24,44 @@ public class AniadirOlimpiadaController implements Initializable{
     @FXML
     private ChoiceBox<String> cbTemporada;
     
-    OlimpiadasDao oDao = new OlimpiadasDao();
-    String[] campos = {"Summer","Winter"};
-
+    private OlimpiadasDao oDao = new OlimpiadasDao();
+    private String[] campos = {"Summer","Winter"};
+    private Olimpiada o;
+    private boolean modificar;
+    
     /**
-     * Genera una olimpiada y la añade a la BBDD.
+     * Genera una olimpiada y la añade/modifica a la BBDD.
      * @param event
      */
     @FXML
     void Aceptar(ActionEvent event) {
 
+    	
     	int nId = oDao.generarId("Olimpiada");
     	Integer nAnio = Integer.parseInt(tfAnio.getText());
     	String sTemporada = cbTemporada.getSelectionModel().getSelectedItem();
     	String sCiudad = tfCiudad.getText();
-    	String sNombre = nAnio + " " + sCiudad;
-    	Olimpiada o = new Olimpiada(nId, sNombre, nAnio, sTemporada, sCiudad);
-    	boolean resultado = oDao.aniadirOlimpiada(o);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Olimpiada añadido con éxito");
-    		Cancelar(event);
+    	String sNombre = nAnio + " " + sTemporada;
+    	
+    	
+    	if (modificar) {
+    		Olimpiada oMod = new Olimpiada(o.getIdOlimpiada(), sNombre, nAnio, sTemporada, sCiudad);
+    		boolean resultado = oDao.modificarOlimpiada(oMod);
+    		if (resultado) {
+        		TablaGeneralController.ventanaAlerta("I", "Olimpiada modificada con éxito");
+        		Cancelar(event);
+        	}else {
+        		TablaGeneralController.ventanaAlerta("E", "Error al modificar Olimpiada");
+        	}
     	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al añadir Olimpiada");
+    		Olimpiada oMod = new Olimpiada(nId, sNombre, nAnio, sTemporada, sCiudad);
+    		boolean resultado = oDao.aniadirOlimpiada(oMod);
+        	if (resultado) {
+        		TablaGeneralController.ventanaAlerta("I", "Olimpiada añadida con éxito");
+        		Cancelar(event);
+        	}else {
+        		TablaGeneralController.ventanaAlerta("E", "Error al añadir Olimpiada");
+        	}	
     	}
     }
 
@@ -67,6 +83,21 @@ public class AniadirOlimpiadaController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cbTemporada.getItems().addAll(campos);
 		
+		try {
+			o = OlimpiadaController.gOliModificar;
+			modificar = true;
+			mostrarDatosModificar();
+		}catch(Exception e) {}
+		
 	}
 
+	private void mostrarDatosModificar() {
+		tfAnio.setText(o.getAnio().toString());
+		tfCiudad.setText(o.getCiudad());
+		if (o.getTemporada().equals("Summer")) {
+			cbTemporada.getSelectionModel().select(campos[0]);
+		}else {
+			cbTemporada.getSelectionModel().select(campos[1]);
+		}
+	}
 }

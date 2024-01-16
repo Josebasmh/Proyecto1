@@ -13,7 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -23,13 +25,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Equipo;
 import model.Participacion;
 
 public class TablaGeneralController implements Initializable{
 
     @FXML
     private ChoiceBox<String> cbBusqueda;
-
+    
+    @FXML
+    private ContextMenu cmTabla;
+    
     @FXML
     private Menu mAyuda;
 
@@ -38,6 +44,18 @@ public class TablaGeneralController implements Initializable{
 
     @FXML
     private Menu mTablas;
+    
+    @FXML
+    private MenuItem miEliminar;
+    
+    @FXML
+    private MenuItem miEliminarEquipo;
+
+    @FXML
+    private MenuItem miModificar;
+    
+    @FXML
+    private MenuItem miModificarEquipo;
 
     @FXML
     private TableColumn<Participacion, String> tcAbreviatura;
@@ -72,6 +90,8 @@ public class TablaGeneralController implements Initializable{
     // VARIABLES DE CLASE INSERTADAS MANUALMENTE \\
     private OlimpiadasDao oDao = new OlimpiadasDao();
     private String[]campos = {"Deportista","Evento","Olimpiada","Deporte","Equipo","Abreviatura","Edad","Medalla"};
+    static Participacion pModificar;
+    static Equipo gEquipoModificar;
 
     /**
      * Método para iniciar la tabla Deportista
@@ -148,6 +168,8 @@ public class TablaGeneralController implements Initializable{
     @FXML
     void aniadirParticipacion(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirParticipacion", "AÑADIR PARTICIPACION", 500, 450);
+    	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+		cargarTabla(participaciones);
     }
 
     /**
@@ -163,6 +185,36 @@ public class TablaGeneralController implements Initializable{
     	cargarTabla(listaFiltrada);
     }
 
+    /**
+     * Modifica la participación seleccionada en la tabla. 
+     * @param event
+     */
+    @FXML
+    void modificar(ActionEvent event) {    		
+    		pModificar = tvTabla.getSelectionModel().getSelectedItem();    		
+    		ventanaSecundaria("VentanaAñadirParticipacion", "MODIFICAR PARTICIPACION", 500, 450);
+    		pModificar=null;
+    		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+    		cargarTabla(participaciones);    		
+    }
+    
+    @FXML
+    void modificarEquipo(ActionEvent event) {
+    	gEquipoModificar = oDao.filtrarEquipo("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomEquipo()).get(0);    	
+		ventanaSecundaria("VentanaAñadirEquipo", "MODIFICAR EQUIPO", 380, 460);
+		gEquipoModificar =null;  
+    }
+    
+    @FXML
+    void eliminar(ActionEvent event) {
+    		
+    }
+    
+    @FXML
+    void eliminarEquipo(ActionEvent event) {
+
+    }
+    
     /**
      * Cuando se inicia la ventana, añade todos los registros de la tabla Participacion de la bbdd en la tabla de la ventana y 
      * rellena el choicebox para seleccionar el campo que queremos filtrar.
@@ -212,7 +264,7 @@ public class TablaGeneralController implements Initializable{
 			stage.setMaxHeight(anchura);
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.show();	
+			stage.show();
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
