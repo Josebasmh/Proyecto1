@@ -82,7 +82,6 @@ public class OlimpiadasDao {
 			e.printStackTrace();
 			return false;
 		}
-		
 	}
 	
 	// PARTICIPACION \\
@@ -154,6 +153,14 @@ public class OlimpiadasDao {
 				",medalla='"+p.getMedalla()+"'"+
 				" WHERE id_deportista="+p.getIdDeportista()+
 				" AND id_evento="+p.getIdEvento();
+		
+		return ejecutarConsulta(consulta);
+	}
+
+	public boolean eliminarParticipacion(Participacion p) {
+		String consulta = "DELETE FROM Participacion" + 
+				" WHERE id_deportista="+p.getIdDeportista() +
+				" AND id_evento="+p.getIdEvento()+";";
 		
 		return ejecutarConsulta(consulta);
 	}

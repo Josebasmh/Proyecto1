@@ -207,7 +207,15 @@ public class TablaGeneralController implements Initializable{
     
     @FXML
     void eliminar(ActionEvent event) {
-    		
+    	
+    	boolean resultado = oDao.eliminarParticipacion(tvTabla.getSelectionModel().getSelectedItem());
+    	if (resultado) {
+    		TablaGeneralController.ventanaAlerta("I", "Participación modificada con éxito");
+    	}else {
+    		TablaGeneralController.ventanaAlerta("E", "Error al modificar participación");
+    	}
+    	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+    	tvTabla.setItems(participaciones);
     }
     
     @FXML
