@@ -84,6 +84,30 @@ public class OlimpiadasDao {
 			return false;
 		}
 	}
+
+	public boolean eliminar(String tabla,String campo, Integer ID) {
+		String consulta = "DELETE FROM "+tabla+ 
+				" WHERE "+campo+"="+ID+";";
+		
+		return ejecutarConsulta(consulta);
+		
+	}
+	
+	public Integer buscarRegistros(String tabla, String campo, int ID) {
+		String consulta = "SELECT COUNT(*) FROM "+tabla+" WHERE "+campo+" ='"+ID+"';";
+		int resp=0;
+		try {
+			conexion = new ConexionBD();
+			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				resp = rs.getInt(0);
+			}
+			conexion.CloseConexion();
+		} catch (SQLException e) {}		
+		return resp;
+	}
+	
 	
 	// PARTICIPACION \\
 	/**
@@ -566,18 +590,5 @@ public class OlimpiadasDao {
 		return listaDeporte;
 	}
 
-	public Integer buscarRegistros(String tabla, String campo, int ID) {
-		String consulta = "SELECT COUNT(*) FROM "+tabla+" WHERE "+campo+" ='"+ID+"';";
-		int resp=0;
-		try {
-			conexion = new ConexionBD();
-			PreparedStatement ps = conexion.getConexion().prepareStatement(consulta);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				resp = rs.getInt(0);
-			}
-			conexion.CloseConexion();
-		} catch (SQLException e) {}		
-		return resp;
-	}
+	
 }

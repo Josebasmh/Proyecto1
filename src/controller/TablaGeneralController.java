@@ -25,7 +25,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Deportista;
 import model.Equipo;
+import model.Evento;
 import model.Participacion;
 
 public class TablaGeneralController implements Initializable{
@@ -204,15 +206,40 @@ public class TablaGeneralController implements Initializable{
     
     @FXML
     void eliminar(ActionEvent event) {
-    	gEquipoModificar = oDao.filtrarEquipo("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomEquipo()).get(0);
-    	boolean resultado = oDao.eliminarParticipacion(tvTabla.getSelectionModel().getSelectedItem());
+    	Participacion p = tvTabla.getSelectionModel().getSelectedItem();
+    	boolean resultado = oDao.eliminarParticipacion(p);
     	if (resultado) {
     		TablaGeneralController.ventanaAlerta("I", "Participación eliminada con éxito");
-    		Integer cont = oDao.buscarRegistros("Participacion","id_equipo",gEquipoModificar.getIdEquipo());
-    		if (cont==0) {
-    			resultado = eliminarEquipo();
+    		Integer contD = oDao.buscarRegistros("Participacion","id_deportista",p.getIdDeportista());
+    		Integer contEq = oDao.buscarRegistros("Participacion","id_equipo",p.getIdEquipo());
+    		Integer contEv = oDao.buscarRegistros("Participacion","id_equipo",p.getIdEvento());
+    		
+    		if (contEq==0) {
+    			oDao.eliminar("Equipo", "id_equipo", p.getIdEquipo());
     			TablaGeneralController.ventanaAlerta("I", "El equipo se eliminó al eliminar el último registro vinculado");
     		}
+    		if(contD==0) {
+    			oDao.eliminar("Deportista", "id_deportista", p.getIdDeportista());
+    			TablaGeneralController.ventanaAlerta("I", "El deportista se eliminó al eliminar el último registro vinculado");
+    		}
+    		if(contEv==0) {
+    			Evento ev = oDao.filtrarEvento("id_evento", p.getIdEvento()+"").get(0);
+    			Integer contDe= oDao.buscarRegistros("Evento", "id_deporte", ev.getIdDeporte());
+    			Integer contOl= oDao.buscarRegistros("Evento", "id_olimpiada", ev.getIdOlimpiada());
+    			
+    			oDao.eliminar("Evento", "id_evento", p.getIdEvento());
+    			TablaGeneralController.ventanaAlerta("I", "El evento se eliminó al eliminar el último registro vinculado");
+    			
+    			if(contDe==0) {
+    				oDao.eliminar("Deporte", "id_deporte", ev.getIdDeporte());
+        			TablaGeneralController.ventanaAlerta("I", "El deporte se eliminó al eliminar el último registro vinculado");
+    			}
+    			if(contOl==0) {
+    				oDao.eliminar("Evento", "id_evento", ev.getIdOlimpiada());
+        			TablaGeneralController.ventanaAlerta("I", "La olimpiada se eliminó al eliminar el último registro vinculado");
+    			}
+    		}    		
+    		
     	}else {
     		TablaGeneralController.ventanaAlerta("E", "ELIMINE TODOS LOS REGISTROS ASOCIADOS");
     	}
@@ -275,18 +302,6 @@ public class TablaGeneralController implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	
-	private boolean eliminarEquipo() {
-    	
-    	boolean resultado = oDao.eliminarEquipo(gEquipoModificar);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Equipo eliminado con éxito");
-    		return true;
-    	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al eliminar equipo");
-    		return false;
-    	}
-    }
 	
 	/**
 	 * Crea una alerta en pantalla que puede ser de tipo error (E) o de tipo información(I)
