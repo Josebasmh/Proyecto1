@@ -46,9 +46,15 @@ public class TablaGeneralController implements Initializable{
     
     @FXML
     private MenuItem miEliminar;
+    
+    @FXML
+    private MenuItem miEliminarEquipo;
 
     @FXML
     private MenuItem miModificar;
+    
+    @FXML
+    private MenuItem miModificarEquipo;
 
     @FXML
     private TableColumn<Participacion, String> tcAbreviatura;
@@ -191,8 +197,18 @@ public class TablaGeneralController implements Initializable{
     }
     
     @FXML
+    void modificarEquipo(ActionEvent event) {
+
+    }
+    
+    @FXML
     void eliminar(ActionEvent event) {
     		
+    }
+    
+    @FXML
+    void eliminarEquipo(ActionEvent event) {
+
     }
     
     /**

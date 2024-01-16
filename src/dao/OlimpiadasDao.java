@@ -66,6 +66,11 @@ public class OlimpiadasDao {
 		return nId;
 	}
 	
+	/**
+	 * Ejecuta la consulta pasada como parámetro.
+	 * @param consulta
+	 * @return
+	 */
 	private boolean ejecutarConsulta(String consulta) {
 		try {
 			conexion = new ConexionBD();
@@ -225,7 +230,7 @@ public class OlimpiadasDao {
 	/**
 	 * Cambia el Deportista de la BBDD por el pasado por parámetro. 
 	 * @param d
-	 * @return
+	 * @return true(modificado con éxito) / false(error al modificar).
 	 */
 	public boolean modificarDeportista(Deportista d) {
 		String consulta = "UPDATE Deportista SET nombre='"+d.getNombre()+
@@ -296,6 +301,11 @@ public class OlimpiadasDao {
 		return ejecutarConsulta(consulta);
 	}
 	
+	/**
+	 * Cambia el Evento de la BBDD por el pasado por parámetro. 
+	 * @param e
+	 * @return true(modificado con éxito) / false(error al modificar).
+	 */
 	public boolean modificarEvento(Evento e) {
 		String consulta = "UPDATE Evento SET"+
 				" nombre='"+e.getNomEvento()+
@@ -368,8 +378,11 @@ public class OlimpiadasDao {
 		return ejecutarConsulta(consulta);
 	}
 	
-
-	
+	/**
+	 * Cambia la Olimpiada de la BBDD por el pasado por parámetro. 
+	 * @param o
+	 * @return true(modificado con éxito) / false(error al modificar).
+	 */
 	public boolean modificarOlimpiada(Olimpiada o) {
 		
 		String consulta = "UPDATE Olimpiada SET"+
@@ -430,6 +443,12 @@ public class OlimpiadasDao {
 		return ejecutarConsulta(consulta);
 	}
 	
+	/**
+	 * Filtra los datos de deporte dependiendo del campo seleccionado en el ChoiceBox y del valor del TextField.
+	 * @param campoSeleccionado
+	 * @param txFiltro
+	 * @return
+	 */
 	public ObservableList<Deporte> filtrarDeporte(String campoSeleccionado, String txFiltro) {
 		ObservableList<Deporte> listaDeporte = FXCollections.observableArrayList();
 		String consultaModificada = consultaDeporte+ " WHERE "+campoSeleccionado+" LIKE '%"+txFiltro+"%';";
