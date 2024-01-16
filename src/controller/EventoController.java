@@ -12,7 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -28,12 +30,18 @@ public class EventoController implements Initializable{
 
     @FXML
     private ChoiceBox<String> cbBusqueda;
-
+    
     @FXML
-    private Menu mAyuda;
+    private ContextMenu cmTabla;
 
     @FXML
     private Menu mAñadir;
+    
+    @FXML
+    private MenuItem miEliminar;
+
+    @FXML
+    private MenuItem miModificar;
 
     @FXML
     private TableColumn<Evento, String> tcDeporte;
@@ -100,6 +108,16 @@ public class EventoController implements Initializable{
     	String txFiltro = tfBusqueda.getText().toString();    	
     	ObservableList<Evento>listaFiltrada = oDao.filtrarEvento(campoSeleccionado, txFiltro);
     	cargarTabla(listaFiltrada);
+    }
+    
+    @FXML
+    void modificar(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void eliminar(ActionEvent event) {
+
     }
 
     /**
