@@ -49,9 +49,6 @@ public class TablaGeneralController implements Initializable{
     private MenuItem miEliminar;
     
     @FXML
-    private MenuItem miEliminarEquipo;
-
-    @FXML
     private MenuItem miModificar;
     
     @FXML
@@ -207,25 +204,17 @@ public class TablaGeneralController implements Initializable{
     
     @FXML
     void eliminar(ActionEvent event) {
-    	
+    	gEquipoModificar = oDao.filtrarEquipo("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomEquipo()).get(0);
     	boolean resultado = oDao.eliminarParticipacion(tvTabla.getSelectionModel().getSelectedItem());
     	if (resultado) {
     		TablaGeneralController.ventanaAlerta("I", "Participación eliminada con éxito");
+    		Integer cont = oDao.buscarRegistros("Participacion","id_equipo",gEquipoModificar.getIdEquipo());
+    		if (cont==0) {
+    			resultado = eliminarEquipo();
+    			TablaGeneralController.ventanaAlerta("I", "El equipo se eliminó al eliminar el último registro vinculado");
+    		}
     	}else {
     		TablaGeneralController.ventanaAlerta("E", "ELIMINE TODOS LOS REGISTROS ASOCIADOS");
-    	}
-    	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
-    	tvTabla.setItems(participaciones);
-    }
-    
-    @FXML
-    void eliminarEquipo(ActionEvent event) {
-    	gEquipoModificar = oDao.filtrarEquipo("nombre", tvTabla.getSelectionModel().getSelectedItem().getNomEquipo()).get(0);
-    	boolean resultado = oDao.eliminarEquipo(gEquipoModificar);
-    	if (resultado) {
-    		TablaGeneralController.ventanaAlerta("I", "Equipo eliminado con éxito");
-    	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al eliminar equipo");
     	}
     	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
     	tvTabla.setItems(participaciones);
@@ -285,7 +274,19 @@ public class TablaGeneralController implements Initializable{
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-	} 
+	}
+	
+	private boolean eliminarEquipo() {
+    	
+    	boolean resultado = oDao.eliminarEquipo(gEquipoModificar);
+    	if (resultado) {
+    		TablaGeneralController.ventanaAlerta("I", "Equipo eliminado con éxito");
+    		return true;
+    	}else {
+    		TablaGeneralController.ventanaAlerta("E", "Error al eliminar equipo");
+    		return false;
+    	}
+    }
 	
 	/**
 	 * Crea una alerta en pantalla que puede ser de tipo error (E) o de tipo información(I)
