@@ -108,8 +108,8 @@ public class AniadirEventoController implements Initializable{
 		
 		try {
 			eve = EventoController.gEveModificar;
-			modificar = true;
 			mostrarDatosModificar();
+			modificar = true;
 		}catch(Exception e) {}
 	}
 

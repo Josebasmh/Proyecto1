@@ -169,7 +169,7 @@ public class TablaGeneralController implements Initializable{
     void aniadirParticipacion(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirParticipacion", "AÑADIR PARTICIPACION", 500, 450);
     	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
-		cargarTabla(participaciones);
+    	cargarTabla(participaciones);
     }
 
     /**
@@ -195,7 +195,7 @@ public class TablaGeneralController implements Initializable{
     		ventanaSecundaria("VentanaAñadirParticipacion", "MODIFICAR PARTICIPACION", 500, 450);
     		pModificar=null;
     		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
-    		cargarTabla(participaciones);    		
+    		tvTabla.setItems(participaciones);		
     }
     
     @FXML
@@ -212,7 +212,7 @@ public class TablaGeneralController implements Initializable{
     	if (resultado) {
     		TablaGeneralController.ventanaAlerta("I", "Participación eliminada con éxito");
     	}else {
-    		TablaGeneralController.ventanaAlerta("E", "Error al eliminar participación");
+    		TablaGeneralController.ventanaAlerta("E", "ELIMINE TODOS LOS REGISTROS ASOCIADOS");
     	}
     	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
     	tvTabla.setItems(participaciones);

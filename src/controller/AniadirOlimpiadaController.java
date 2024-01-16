@@ -85,8 +85,8 @@ public class AniadirOlimpiadaController implements Initializable{
 		
 		try {
 			o = OlimpiadaController.gOliModificar;
-			modificar = true;
 			mostrarDatosModificar();
+			modificar = true;
 		}catch(Exception e) {}
 		
 	}

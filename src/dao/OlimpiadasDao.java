@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import conexion.ConexionBD;
+import controller.TablaGeneralController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Deporte;
@@ -537,7 +538,7 @@ public class OlimpiadasDao {
 
 	public boolean eliminarEquipo(Equipo eq) {
 		String consulta = "DELETE FROM Equipo" + 
-				" WHERE id_deportista="+eq.getIdEquipo()+";";
+				" WHERE id_equipo="+eq.getIdEquipo()+";";
 		
 		return ejecutarConsulta(consulta);
 	}
