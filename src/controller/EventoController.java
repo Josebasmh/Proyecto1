@@ -139,14 +139,33 @@ public class EventoController implements Initializable{
 		cargarTabla(eventos);
 		
     }
+    
+    /**
+     * Elimina el evento y los hijos sin vinculación.
+     * @param event
+     */
     @FXML
     void eliminar(ActionEvent event) {
+    	Evento ev = tvTabla.getSelectionModel().getSelectedItem();
+    	oDao.eliminar("Evento", "id_evento", ev.getIdEvento());
     	
-    }
-    
-    @FXML
-    void eliminarDeporte(ActionEvent event) {
-
+    	Integer contEv= oDao.buscarRegistros("Evento", "id_evento", ev.getIdEvento());
+		Integer contDe= oDao.buscarRegistros("Evento", "id_deporte", ev.getIdDeporte());
+		Integer contOl= oDao.buscarRegistros("Evento", "id_olimpiada", ev.getIdOlimpiada());
+		
+		if (contEv==0) {
+			TablaGeneralController.ventanaAlerta("I", "Evento eliminado con éxito");
+			if(contDe==0) {
+				oDao.eliminar("Deporte", "id_deporte", ev.getIdDeporte());
+				TablaGeneralController.ventanaAlerta("I", "El deporte se eliminó al eliminar el último registro vinculado");
+			}
+			if(contOl==0) {
+				oDao.eliminar("Evento", "id_evento", ev.getIdOlimpiada());
+				TablaGeneralController.ventanaAlerta("I", "La olimpiada se eliminó al eliminar el último registro vinculado");
+			}
+		}else {
+			TablaGeneralController.ventanaAlerta("E", "No se pudo eliminar el evento");
+		}	
     }
 
     /**

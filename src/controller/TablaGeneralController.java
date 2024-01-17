@@ -98,7 +98,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirDeportista(ActionEvent event) {
-    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS",800,600);
+    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS",600,800);
     }
 
     /**
@@ -107,7 +107,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirEvento(ActionEvent event) {
-    	ventanaSecundaria("VentanaEvento", "EVENTOS",800,600);
+    	ventanaSecundaria("VentanaEvento", "EVENTOS",600,800);
     }
 
     /**
@@ -116,7 +116,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirOlimpiada(ActionEvent event) {
-    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS",800,600);
+    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS",600,800);
     }
     
     /**
@@ -125,7 +125,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirDeporte(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirDeporte", "AÑADIR DEPORTE", 450, 190);
+    	ventanaSecundaria("VentanaAñadirDeporte", "AÑADIR DEPORTE", 200, 450);
     }
 
     /**
@@ -134,7 +134,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirDeportista(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA", 500, 450);
+    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA", 450, 500);
     }
 
     /**
@@ -143,7 +143,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirEquipo(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirEquipo", "AÑADIR EQUIPO", 380, 460);
+    	ventanaSecundaria("VentanaAñadirEquipo", "AÑADIR EQUIPO", 275, 475);
     }
 
     /**
@@ -152,7 +152,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirEvento(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirEvento", "AÑADIR EVENTO", 380, 460);
+    	ventanaSecundaria("VentanaAñadirEvento", "AÑADIR EVENTO", 310, 450);
     }
 
     /**
@@ -161,7 +161,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 300, 450);
     }
 
     @FXML
@@ -204,6 +204,10 @@ public class TablaGeneralController implements Initializable{
 		gEquipoModificar =null;  
     }
     
+    /**
+     * Elimina la participación y los hijos/nietos sin vinculación.
+     * @param event
+     */
     @FXML
     void eliminar(ActionEvent event) {
     	Participacion p = tvTabla.getSelectionModel().getSelectedItem();
@@ -291,10 +295,10 @@ public class TablaGeneralController implements Initializable{
 			stage.setTitle(t);
 			Scene scene = new Scene(root,altura,anchura);
 			stage.setScene(scene);
-			stage.setMinWidth(altura);
-			stage.setMinHeight(anchura);
-			stage.setMaxWidth(altura);
-			stage.setMaxHeight(anchura);
+			stage.setMinWidth(anchura);
+			stage.setMinHeight(altura);
+			stage.setMaxWidth(anchura);
+			stage.setMaxHeight(altura);
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.show();

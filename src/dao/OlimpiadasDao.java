@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import conexion.ConexionBD;
-import controller.TablaGeneralController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Deporte;
@@ -79,12 +78,17 @@ public class OlimpiadasDao {
 			int i = ps.executeUpdate(consulta);
 			conexion.CloseConexion();
 			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e) {			
 			return false;
 		}
 	}
-
+	/**
+	 * Elimina registro de tabla.
+	 * @param tabla 
+	 * @param campo
+	 * @param ID
+	 * @return
+	 */
 	public boolean eliminar(String tabla,String campo, Integer ID) {
 		String consulta = "DELETE FROM "+tabla+ 
 				" WHERE "+campo+"="+ID+";";
@@ -182,6 +186,11 @@ public class OlimpiadasDao {
 		return ejecutarConsulta(consulta);
 	}
 
+	/**
+	 * Elimina la participación.
+	 * @param p
+	 * @return
+	 */
 	public boolean eliminarParticipacion(Participacion p) {
 		String consulta = "DELETE FROM Participacion" + 
 				" WHERE id_deportista="+p.getIdDeportista() +
@@ -202,6 +211,7 @@ public class OlimpiadasDao {
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				
 				int nIdDeportista = rs.getInt("id_deportista");
 				int nIdEvento = rs.getInt("id_evento");
 				int nIdEquipo = rs.getInt("id_equipo");
@@ -216,6 +226,7 @@ public class OlimpiadasDao {
 				Participacion p = new Participacion(nIdDeportista, nIdEvento, nIdEquipo, sNomDeportista, sNomEvento, sNomOlimpiada, sNomDeporte, sNomEquipo, sIniciales, nEdad, sMedalla);
 				listaParticipacion.add(p);
 			}
+			
 			conexion.CloseConexion();
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -285,6 +296,7 @@ public class OlimpiadasDao {
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				
 				int nId = rs.getInt("id_deportista");
 				String sNombre = rs.getString("nombre");
 				Character cSexo = rs.getString("sexo").toCharArray()[0];
@@ -359,6 +371,7 @@ public class OlimpiadasDao {
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				
 				int nIdEvento = rs.getInt("id_evento");
 				Integer nIdOlimpiada = rs.getInt("id_olimpiada");
 				Integer nIdDeporte= rs.getInt("id_deporte");
@@ -437,6 +450,7 @@ public class OlimpiadasDao {
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				
 				int nIdOlimpiada = rs.getInt("id_olimpiada");
 				String sNombre = rs.getString("nombre");
 				Integer nAnio = rs.getInt("anio");
@@ -487,6 +501,11 @@ public class OlimpiadasDao {
 		return listaDeporte;
 	}
 
+	/**
+	 * Cambia el Deporte de la BBDD por el pasado por parámetro. 
+	 * @param d
+	 * @return
+	 */
 	public boolean modificarDeporte(Deporte d) {
 		String consulta = "UPDATE Deporte SET"+
 				" nombre='"+d.getNombre()+
@@ -506,6 +525,7 @@ public class OlimpiadasDao {
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				
 				int nIdDeporte = rs.getInt("id_deporte");
 				String sNombre = rs.getString("nombre");
 				Deporte d = new Deporte(nIdDeporte, sNombre);
@@ -552,19 +572,17 @@ public class OlimpiadasDao {
 		return listaEquipo;
 	}
 	
+	/**
+	 * Cambia el equipo de la BBDD por el pasado por parámetro. 
+	 * @param e
+	 * @return
+	 */
 	public boolean modificarEquipo(Equipo e) {
 		String consulta = "UPDATE Equipo SET"+
 				" nombre='"+e.getNombre()+
 				"',iniciales='"+e.getIniciales()+
 				"' WHERE id_equipo="+e.getIdEquipo()+";";		
 		return ejecutarConsulta(consulta);		
-	}
-
-	public boolean eliminarEquipo(Equipo eq) {
-		String consulta = "DELETE FROM Equipo" + 
-				" WHERE id_equipo="+eq.getIdEquipo()+";";
-		
-		return ejecutarConsulta(consulta);
 	}
 	
 	/**
@@ -579,6 +597,7 @@ public class OlimpiadasDao {
 			PreparedStatement pstmt = conexion.getConexion().prepareStatement(consulta);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				
 				int nIdDeporte = rs.getInt("id_equipo");
 				String sNombre = rs.getString("nombre");
 				String sIniciales = rs.getString("iniciales");
