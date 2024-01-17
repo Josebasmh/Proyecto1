@@ -25,7 +25,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Deportista;
 import model.Equipo;
+import model.Evento;
 import model.Participacion;
 
 public class TablaGeneralController implements Initializable{
@@ -48,9 +50,6 @@ public class TablaGeneralController implements Initializable{
     @FXML
     private MenuItem miEliminar;
     
-    @FXML
-    private MenuItem miEliminarEquipo;
-
     @FXML
     private MenuItem miModificar;
     
@@ -99,7 +98,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirDeportista(ActionEvent event) {
-    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS",800,600);
+    	ventanaSecundaria("VentanaDeportista", "DEPORTISTAS",600,800);
     }
 
     /**
@@ -108,7 +107,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirEvento(ActionEvent event) {
-    	ventanaSecundaria("VentanaEvento", "EVENTOS",800,600);
+    	ventanaSecundaria("VentanaEvento", "EVENTOS",600,800);
     }
 
     /**
@@ -117,7 +116,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void abrirOlimpiada(ActionEvent event) {
-    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS",800,600);
+    	ventanaSecundaria("VentanaOlimpiada", "OLIMPIADAS",600,800);
     }
     
     /**
@@ -126,7 +125,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirDeporte(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirDeporte", "AÑADIR DEPORTE", 450, 190);
+    	ventanaSecundaria("VentanaAñadirDeporte", "AÑADIR DEPORTE", 200, 450);
     }
 
     /**
@@ -135,7 +134,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirDeportista(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA", 500, 450);
+    	ventanaSecundaria("VentanaAñadirDeportista", "AÑADIR DEPORTISTA", 450, 500);
     }
 
     /**
@@ -144,7 +143,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirEquipo(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirEquipo", "AÑADIR EQUIPO", 380, 460);
+    	ventanaSecundaria("VentanaAñadirEquipo", "AÑADIR EQUIPO", 275, 475);
     }
 
     /**
@@ -153,7 +152,7 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirEvento(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirEvento", "AÑADIR EVENTO", 380, 460);
+    	ventanaSecundaria("VentanaAñadirEvento", "AÑADIR EVENTO", 310, 450);
     }
 
     /**
@@ -162,14 +161,14 @@ public class TablaGeneralController implements Initializable{
      */
     @FXML
     void aniadirOlimpiada(ActionEvent event) {
-    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 380, 460);
+    	ventanaSecundaria("VentanaAñadirOlimpiada", "AÑADIR OLIMPIADA", 300, 450);
     }
 
     @FXML
     void aniadirParticipacion(ActionEvent event) {
     	ventanaSecundaria("VentanaAñadirParticipacion", "AÑADIR PARTICIPACION", 500, 450);
     	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
-		cargarTabla(participaciones);
+    	cargarTabla(participaciones);
     }
 
     /**
@@ -195,7 +194,7 @@ public class TablaGeneralController implements Initializable{
     		ventanaSecundaria("VentanaAñadirParticipacion", "MODIFICAR PARTICIPACION", 500, 450);
     		pModificar=null;
     		ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
-    		cargarTabla(participaciones);    		
+    		tvTabla.setItems(participaciones);		
     }
     
     @FXML
@@ -205,14 +204,52 @@ public class TablaGeneralController implements Initializable{
 		gEquipoModificar =null;  
     }
     
+    /**
+     * Elimina la participación y los hijos/nietos sin vinculación.
+     * @param event
+     */
     @FXML
     void eliminar(ActionEvent event) {
+    	Participacion p = tvTabla.getSelectionModel().getSelectedItem();
+    	boolean resultado = oDao.eliminarParticipacion(p);
+    	if (resultado) {
+    		TablaGeneralController.ventanaAlerta("I", "Participación eliminada con éxito");
+    		Integer contD = oDao.buscarRegistros("Participacion","id_deportista",p.getIdDeportista());
+    		Integer contEq = oDao.buscarRegistros("Participacion","id_equipo",p.getIdEquipo());
+    		Integer contEv = oDao.buscarRegistros("Participacion","id_equipo",p.getIdEvento());
     		
-    }
-    
-    @FXML
-    void eliminarEquipo(ActionEvent event) {
-
+    		if (contEq==0) {
+    			oDao.eliminar("Equipo", "id_equipo", p.getIdEquipo());
+    			TablaGeneralController.ventanaAlerta("I", "El equipo se eliminó al eliminar el último registro vinculado");
+    		}
+    		if(contD==0) {
+    			oDao.eliminar("Deportista", "id_deportista", p.getIdDeportista());
+    			TablaGeneralController.ventanaAlerta("I", "El deportista se eliminó al eliminar el último registro vinculado");
+    		}
+    		if(contEv==0) {
+    			Evento ev = oDao.filtrarEvento("id_evento", p.getIdEvento()+"").get(0);
+    			Integer contDe= oDao.buscarRegistros("Evento", "id_deporte", ev.getIdDeporte());
+    			Integer contOl= oDao.buscarRegistros("Evento", "id_olimpiada", ev.getIdOlimpiada());
+    			
+    			oDao.eliminar("Evento", "id_evento", p.getIdEvento());
+    			TablaGeneralController.ventanaAlerta("I", "El evento se eliminó al eliminar el último registro vinculado");
+    			
+    			if(contDe==0) {
+    				oDao.eliminar("Deporte", "id_deporte", ev.getIdDeporte());
+        			TablaGeneralController.ventanaAlerta("I", "El deporte se eliminó al eliminar el último registro vinculado");
+    			}
+    			if(contOl==0) {
+    				oDao.eliminar("Evento", "id_evento", ev.getIdOlimpiada());
+        			TablaGeneralController.ventanaAlerta("I", "La olimpiada se eliminó al eliminar el último registro vinculado");
+    			}
+    		}    		
+    		
+    	}else {
+    		TablaGeneralController.ventanaAlerta("E", "ELIMINE TODOS LOS REGISTROS ASOCIADOS");
+    	}
+    	ObservableList<Participacion>participaciones = oDao.cargarParticipacion();
+    	tvTabla.setItems(participaciones);
+    	gEquipoModificar =null;
     }
     
     /**
@@ -258,17 +295,17 @@ public class TablaGeneralController implements Initializable{
 			stage.setTitle(t);
 			Scene scene = new Scene(root,altura,anchura);
 			stage.setScene(scene);
-			stage.setMinWidth(altura);
-			stage.setMinHeight(anchura);
-			stage.setMaxWidth(altura);
-			stage.setMaxHeight(anchura);
+			stage.setMinWidth(anchura);
+			stage.setMinHeight(altura);
+			stage.setMaxWidth(anchura);
+			stage.setMaxHeight(altura);
 			stage.getIcons().add(new Image(getClass().getResource("/img/imgOlimpiadas.jpg").toString()));
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.show();
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-	} 
+	}
 	
 	/**
 	 * Crea una alerta en pantalla que puede ser de tipo error (E) o de tipo información(I)

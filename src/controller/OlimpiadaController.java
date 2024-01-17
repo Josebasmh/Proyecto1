@@ -102,6 +102,14 @@ public class OlimpiadaController implements Initializable{
 
     @FXML
     void eliminar(ActionEvent event) {
+    	Olimpiada o = tvTabla.getSelectionModel().getSelectedItem();
+    	
+		boolean resultado = oDao.eliminar("Olimpiada", "id_olimpiada", o.getIdOlimpiada());
+		if (resultado) {
+			TablaGeneralController.ventanaAlerta("I", "olimpiada eliminada con éxito");
+		}else {
+			TablaGeneralController.ventanaAlerta("E", "no se pudo eliminar la olimpiada");
+		}
     	
     }
     

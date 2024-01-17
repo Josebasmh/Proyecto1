@@ -108,10 +108,17 @@ public class DeportistaController implements Initializable{
 
 	@FXML
     void eliminar(ActionEvent event) {
-
+		Deportista d = tvTabla.getSelectionModel().getSelectedItem();
+		boolean resp = oDao.eliminar("Deportista","id_deportista",d.getIdDeportista());
+		if(resp) {
+			TablaGeneralController.ventanaAlerta("I", "Deportista eliminado con éxito.");
+		}else {
+			TablaGeneralController.ventanaAlerta("E", "No se pudo eliminar el deportista.");
+		}
+		
     }
 
-    /**
+	/**
      * Al iniciarse la ventana, se sincroniza con la base de datos para mostrar todos los registros de la tabla Deportista.
      */
 	@Override

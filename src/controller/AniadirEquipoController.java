@@ -74,8 +74,8 @@ public class AniadirEquipoController implements Initializable{
 		
 		try {
 			eq = TablaGeneralController.gEquipoModificar;
-			modificar = true;
 			mostrarDatosModificar();
+			modificar = true;
 		}catch(Exception e) {}
 	}
 

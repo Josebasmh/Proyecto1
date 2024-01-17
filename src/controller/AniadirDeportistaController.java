@@ -82,6 +82,7 @@ public class AniadirDeportistaController implements Initializable{
             	}
         	}
     	}catch(Exception e) {
+    		e.printStackTrace();
     		TablaGeneralController.ventanaAlerta("E", "Los campos nombre y sexo son obligatorios");
     	}    	
     }
@@ -109,8 +110,8 @@ public class AniadirDeportistaController implements Initializable{
 		
 		try {
 			d = DeportistaController.gDepModificar;
-			modificar = true;
 			mostrarDatosModificar(d);
+			modificar = true;
 		}catch(Exception e) {}
 	}
 

@@ -103,8 +103,8 @@ public class AniadirParticipacionController implements Initializable{
 		
 		try {
 			Participacion p = TablaGeneralController.pModificar;
-			modificar=true;
 			mostrarDatosModificar(p);
+			modificar=true;
 		}catch(Exception e) {}		
 	}
 

@@ -61,8 +61,8 @@ public class AniadirDeporteController implements Initializable{
 		
 		try {
 			d = EventoController.gDepModificar;
-			modificar = true;
 			mostrarDatosModificar();
+			modificar = true;
 		}catch(Exception e) {}
 		
 	}
